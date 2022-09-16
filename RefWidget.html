@@ -26,12 +26,13 @@
                * Exposed
                */
                 this.init = init;
-                this.makeAPICall = makeAPICall;
+                this.makeAPICall = updateOriginalSubmission;
 
                 var currFormID = formData["formID"];
                 var controlFieldsToUpdate;
                 var originalSubmissionId;
                 var refNumber;
+                var currTaskId;
 
                 function init() {
                     console.log(formData)
@@ -55,10 +56,9 @@
 
                 }
 
-                function makeAPICall(apiKey) {
+                function updateOriginalSubmission(apiKey) {
                     console.log(`https://acaciumgroup.jotform.com/API/submission/${originalSubmissionId}?apiKey=${apiKey}`)
                     jQuery.ajax({
-                        //url: "https://eu-api.jotform.com/submission/5353380933424302821?apiKey=aa1473ed813357cb04ee2f2128ffd25e",
                         url: `https://acaciumgroup.jotform.com/API/submission/${originalSubmissionId}?apiKey=${apiKey}`,
                         method: "POST",
                         data: controlFieldsToUpdate,
@@ -82,6 +82,58 @@
                         }
                     })
 
+                }
+
+                function getTaskId(beforeHireId, afterHireId) {
+                    console.log(`https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={"status:ne":["COMPLETED","CANCELED"],"onlyAssignee":"1"}&apikey=${apiKey}`)
+                    jQuery.ajax({
+                        url: `https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={"status:ne":["COMPLETED","CANCELED"],"onlyAssignee":"1"}&apikey=${apiKey}`,
+                        method: "POST",
+                        // timeout: 10000,
+                        success: function (response) {
+                            console.log(response);
+
+                            for (let i = 0; i < response.taskList.length; i++) {
+                                // const element = array[index];
+                                if (response.taskList[i]["workflow_element_id"] === beforeHireId || response.taskList[i]["workflow_element_id"] === afterHireId) {
+                                    currTaskId = response.taskList[i]["id"];
+                                    return
+                                }
+                            }
+                            return
+                        },
+                        error: function (response) {
+                            console.log(response);
+                            return
+                        }
+                    })
+                }
+
+                function markRefAsComplete(taskID) {
+                    console.log(`https://acaciumgroup.jotform.com/API/workflow/task/${taskID}/complete?apiKey=${apiKey}`)
+                    jQuery.ajax({
+                        url: `https://acaciumgroup.jotform.com/API/workflow/task/${taskID}/complete?apiKey=${apiKey}`,
+                        method: "POST",
+                        data: { "outcomeID": 1, "comment": "" },
+                        // timeout: 10000,
+                        success: function (response) {
+                            console.log(response);
+                            //add result.info to array [1] and return it
+                            if (response.result === "YES" && response.errorcode === "Success") {
+                                console.log("Pass");
+                                // callFinished = true;
+                                return
+                            }
+                            else {
+                                console.log("Failed");
+                                return
+                            }
+                        },
+                        error: function (response) {
+                            console.log(response);
+                            return
+                        }
+                    })
                 }
 
                 function checkFormId(currFormID) {
@@ -125,6 +177,18 @@
                                 }
                                 // setTimeout(ProcessData(res), 500);
                             });
+                            break;
+                        case "221883749204057":
+                            //Onboarding pack
+                            controlFieldsToUpdate = {
+                                "submission[33]": "Awaiting Review"
+                            }
+                            break;
+                        case "222003834675049":
+                            //Ts&Cs pack
+                            controlFieldsToUpdate = {
+                                "submission[34]": "Awaiting Review"
+                            }
                             break;
                         case "221574004656352":
                             //Pulse Ref
@@ -195,6 +259,7 @@
                                     "submission[229][year]": res.data[8].value //end date year
                                 }
                             })
+                            // getTaskId("","")
                             break;
                         case "2":
                             JFCustomWidget.getFieldsValueByName(fieldsToGetValues, function (res) {
@@ -212,6 +277,7 @@
                                     "submission[231][year]": res.data[8].value //end date year
                                 }
                             })
+                            // getTaskId("","")
                             break;
                         case "3":
                             JFCustomWidget.getFieldsValueByName(fieldsToGetValues, function (res) {
@@ -229,6 +295,7 @@
                                     "submission[233][year]": res.data[8].value //end date year
                                 }
                             })
+                            // getTaskId("","")
                             break;
                         case "4":
                             JFCustomWidget.getFieldsValueByName(fieldsToGetValues, function (res) {
@@ -263,6 +330,7 @@
                                     "submission[237][year]": res.data[8].value //end date year
                                 }
                             })
+                            // getTaskId("","")
                             break;
                         case "6":
                             JFCustomWidget.getFieldsValueByName(fieldsToGetValues, function (res) {
@@ -280,6 +348,7 @@
                                     "submission[239][year]": res.data[8].value //end date year
                                 }
                             })
+                            // getTaskId("","")
                             break;
 
                         default:
@@ -302,10 +371,10 @@
 
                 JFCustomWidget.subscribe('submit', function () {
                     widgetParams = JFCustomWidget.getWidgetSettings()
-                    widget.makeAPICall(widgetParams["apiKey"]);
+                    widget.updateOriginalSubmission(widgetParams["apiKey"]);
 
                     // send the data
-                    // JFCustomWidget.sendSubmit();
+                    // JFCustomWidget.sendSubmit({value: "Control form updated", valid:true});
                 });
 
                 // console.log(JFCustomWidget)
