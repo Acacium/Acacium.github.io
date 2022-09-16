@@ -87,9 +87,9 @@
                 }
 
                 function getTaskId(approvalName) {
-                    console.log(`https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={"status:ne":["COMPLETED","CANCELED"],"onlyAssignee":"1"}&apikey=${apiKey}`)
+                    console.log(`https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={"status:ne":["COMPLETED","CANCELED"],"onlyAssignee":"1"}&apikey=${params["apiKey"]}`)
                     jQuery.ajax({
-                        url: `https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={"status:ne":["COMPLETED","CANCELED"],"onlyAssignee":"1"}&apikey=${apiKey}`,
+                        url: `https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={"status:ne":["COMPLETED","CANCELED"],"onlyAssignee":"1"}&apikey=${params["apiKey"]}`,
                         method: "POST",
                         // timeout: 10000,
                         success: function (response) {
@@ -114,9 +114,9 @@
                 }
 
                 function markRefAsComplete(taskID) {
-                    console.log(`https://acaciumgroup.jotform.com/API/workflow/task/${taskID}/complete?apiKey=${apiKey}`)
+                    console.log(`https://acaciumgroup.jotform.com/API/workflow/task/${taskID}/complete?apiKey=${params["apiKey"]}`)
                     jQuery.ajax({
-                        url: `https://acaciumgroup.jotform.com/API/workflow/task/${taskID}/complete?apiKey=${apiKey}`,
+                        url: `https://acaciumgroup.jotform.com/API/workflow/task/${taskID}/complete?apiKey=${params["apiKey"]}`,
                         method: "POST",
                         data: { "outcomeID": 1, "comment": "" },
                         // timeout: 10000,
