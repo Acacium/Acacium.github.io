@@ -26,7 +26,9 @@
                * Exposed
                */
                 this.init = init;
-                this.makeAPICall = updateOriginalSubmission;
+                this.updateOriginalSubmission = updateOriginalSubmission;
+                this.markRefAsComplete = markRefAsComplete;
+
 
                 var currFormID = formData["formID"];
                 var controlFieldsToUpdate;
@@ -84,19 +86,21 @@
 
                 }
 
-                function getTaskId(beforeHireId, afterHireId) {
+                function getTaskId(approvalName) {
                     console.log(`https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={"status:ne":["COMPLETED","CANCELED"],"onlyAssignee":"1"}&apikey=${apiKey}`)
                     jQuery.ajax({
                         url: `https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={"status:ne":["COMPLETED","CANCELED"],"onlyAssignee":"1"}&apikey=${apiKey}`,
                         method: "POST",
                         // timeout: 10000,
                         success: function (response) {
-                            console.log(response);
+                            var currTaskList = response?.content[0]?.taskList;
+                            console.log(currTaskList)
 
-                            for (let i = 0; i < response.taskList.length; i++) {
-                                // const element = array[index];
-                                if (response.taskList[i]["workflow_element_id"] === beforeHireId || response.taskList[i]["workflow_element_id"] === afterHireId) {
-                                    currTaskId = response.taskList[i]["id"];
+                            for (let i = 0; i < currTaskList?.length; i++) {
+                                //   // const element = array[index];
+                                if (currTaskList[i]?.properties?.taskName === approvalName) {
+                                    var currTaskId = currTaskList[i]?.id;
+                                    console.log(currTaskId);
                                     return
                                 }
                             }
@@ -259,7 +263,7 @@
                                     "submission[229][year]": res.data[8].value //end date year
                                 }
                             })
-                            // getTaskId("","")
+                            getTaskId("Approve Ref 1?")
                             break;
                         case "2":
                             JFCustomWidget.getFieldsValueByName(fieldsToGetValues, function (res) {
@@ -277,7 +281,7 @@
                                     "submission[231][year]": res.data[8].value //end date year
                                 }
                             })
-                            // getTaskId("","")
+                            getTaskId("Approve Ref 2?")
                             break;
                         case "3":
                             JFCustomWidget.getFieldsValueByName(fieldsToGetValues, function (res) {
@@ -295,7 +299,7 @@
                                     "submission[233][year]": res.data[8].value //end date year
                                 }
                             })
-                            // getTaskId("","")
+                            getTaskId("Approve Ref 3?")
                             break;
                         case "4":
                             JFCustomWidget.getFieldsValueByName(fieldsToGetValues, function (res) {
@@ -313,6 +317,7 @@
                                     "submission[235][year]": res.data[8].value //end date year
                                 }
                             })
+                            getTaskId("Approve Ref 4?")
                             break;
                         case "5":
                             JFCustomWidget.getFieldsValueByName(fieldsToGetValues, function (res) {
@@ -330,7 +335,7 @@
                                     "submission[237][year]": res.data[8].value //end date year
                                 }
                             })
-                            // getTaskId("","")
+                            getTaskId("Approve Ref 5?")
                             break;
                         case "6":
                             JFCustomWidget.getFieldsValueByName(fieldsToGetValues, function (res) {
@@ -348,7 +353,7 @@
                                     "submission[239][year]": res.data[8].value //end date year
                                 }
                             })
-                            // getTaskId("","")
+                            getTaskId("Approve Ref 6?")
                             break;
 
                         default:
@@ -372,6 +377,9 @@
                 JFCustomWidget.subscribe('submit', function () {
                     widgetParams = JFCustomWidget.getWidgetSettings()
                     widget.updateOriginalSubmission(widgetParams["apiKey"]);
+                    if (currTaskId !== undefined && currTaskId !== "") {
+                        widget.markRefAsComplete(currTaskId);
+                    }
 
                     // send the data
                     // JFCustomWidget.sendSubmit({value: "Control form updated", valid:true});
