@@ -104,7 +104,10 @@
                     jQuery.ajax({
                         url: `https://acaciumgroup.jotform.com/API/workflow/task/${taskID}/complete?apiKey=${params["apiKey"]}`,
                         method: "POST",
-                        data: { "outcomeID": 1, "comment": "" },
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        processData: false,
+                        data: { "outcomeID": "1", "comment": "" },
                         // timeout: 10000,
                         success: function (responseData, textStatus, jqXHR) {
                             console.log(responseData);
