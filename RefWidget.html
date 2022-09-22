@@ -50,13 +50,6 @@
 
                     //Check if form data is equal to form IDs
                     checkFormId(currFormID);
-
-                    //Make API calls with fields to update
-
-                    //Ref form
-                    //TCS App form
-                    //Pulse App form
-
                 }
 
                 function updateOriginalSubmission(apiKey) {
@@ -111,7 +104,7 @@
                         data: { "outcomeID": 1, "comment": "" },
                         // timeout: 10000,
                         success: function (responseData, textStatus, jqXHR) {
-                            console.log(responseData);                            
+                            console.log(responseData);
                         },
                         error: function (responseData, textStatus, jqXHR) {
                             console.log(responseData);
@@ -144,7 +137,6 @@
                                     "submission[15]": res.data[2].value,
                                     "submission[245]": res.data[3].value
                                 }
-                                // setTimeout(ProcessData(res), 500);
                             });
                             break;
                         case "222023394876863":
@@ -159,7 +151,6 @@
                                     "submission[15]": res.data[2].value,
                                     "submission[245]": res.data[3].value
                                 }
-                                // setTimeout(ProcessData(res), 500);
                             });
                             break;
                         case "221883749204057":
@@ -208,7 +199,6 @@
                                     "submission[15]": res.data[2].value,
                                     "submission[245]": res.data[3].value
                                 }
-                                // setTimeout(ProcessData(res), 500);
                             });
                             break;
                         case "222514431776051": //Test Ref remove later
@@ -344,7 +334,6 @@
             }
 
             JFCustomWidget.subscribe('ready', function (data) {
-                // console.log('Education Experience List ready', data);
                 var widget = new UpdateControlForm('Test01', data, JFCustomWidget.getWidgetSettings());
                 widget.init();
 
@@ -364,8 +353,6 @@
                     // send the data
                     // JFCustomWidget.sendSubmit({value: "Control form updated", valid:true});
                 });
-
-                // console.log(JFCustomWidget)
             });
         })
 
