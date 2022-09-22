@@ -69,11 +69,14 @@
                 }
 
                 function getTaskId(approvalName) {
-                    console.log(`https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={"status:ne":["COMPLETED","CANCELED"],"onlyAssignee":"1"}&apikey=${params["apiKey"]}`)
+                    console.log(`https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={'status:ne':['COMPLETED','CANCELED'],'onlyAssignee':'1'}`)
                     jQuery.ajax({
-                        url: `https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={"status:ne":["COMPLETED","CANCELED"],"onlyAssignee":"1"}&apikey=${params["apiKey"]}`,
+                        url: `https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={'status:ne':['COMPLETED','CANCELED'],'onlyAssignee':'1'}`,
                         method: "GET",
                         dataType: "jsonp",
+                        data: {
+                            "apiKey": params["apiKey"]
+                        },
                         // timeout: 10000,
                         success: function (responseData, textStatus, jqXHR) {
                             var currTaskList = responseData?.content[0]?.taskList;
