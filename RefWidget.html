@@ -20,7 +20,6 @@
     <script type="text/javascript">
         var currTaskId;
 
-
         $(function () {
             function UpdateControlForm(containerId, formData, params) {
 
@@ -190,6 +189,78 @@
                                 checkRefToUpdate(refNumber, fields);
                             });
                             break;
+                        case "221914243957359":
+                            //Ops control
+                            fields = ["nmcCheck", "hirevueAccount", "additionalInformation33", "referee167", "referee268", "referee372", "referee4127", "referee5136",
+                                "referee6145", "additionalInformation34", "occupationalHealth158", "dbsCheck"]
+                            // fields = ["13", "16", "282", "283"];
+                            JFCustomWidget.getFieldsValueByName(fields, function (res) {
+                                console.log("refNumber = ", res.data.value)
+                                var nmcCheckStatus = res.data[0].value;
+                                var hirevueAccountCheckStatus = res.data[1].value;
+                                var onBoardCheckStatus = res.data[2].value;
+                                var Ref1CheckStatus = res.data[3].value;
+                                var Ref2CheckStatus = res.data[4].value;
+                                var Ref3CheckStatus = res.data[5].value;
+                                var Ref4CheckStatus = res.data[6].value;
+                                var Ref5CheckStatus = res.data[7].value;
+                                var Ref6CheckStatus = res.data[8].value;
+                                var TermPackCheckStatus = res.data[9].value;
+                                var OccHealthCheckStatus = res.data[10].value;
+                                var dbsCheckStatus = res.data[11].value;
+                                //checkRefToUpdate(refNumber, fields);
+
+                                if (nmcCheckStatus === "In Progress") {
+                                    setStartDates("179")
+                                }
+                                if (hirevueAccountCheckStatus === "In Progress") {
+                                    setStartDates("181")
+                                }
+                                if (onBoardCheckStatus === "In Progress") {
+                                    setStartDates("220")
+                                }
+                                if (Ref1CheckStatus === "In Progress") {
+                                    setStartDates("183")
+                                }
+                                if (Ref2CheckStatus === "In Progress") {
+                                    setStartDates("185")
+                                }
+                                if (Ref3CheckStatus === "In Progress") {
+                                    setStartDates("187")
+                                }
+                                if (Ref4CheckStatus === "In Progress") {
+                                    setStartDates("187")
+                                }
+                                if (Ref5CheckStatus === "In Progress") {
+                                    setStartDates("191")
+                                }
+                                if (Ref6CheckStatus === "In Progress") {
+                                    setStartDates("193")
+                                }
+                                if (TermPackCheckStatus === "In Progress") {
+                                    setStartDates("222")
+                                }
+                                if (OccHealthCheckStatus === "In Progress") {
+                                    setStartDates("195")
+                                }
+                                if (dbsCheckStatus === "In Progress") {
+                                    setStartDates("197")
+                                }
+                            });
+                            break;
+                        case "222793557017057": //Test Remove later
+                            fields = ["typeA"]
+                            // fields = ["13", "16", "282", "283"];
+                            JFCustomWidget.getFieldsValueByName(fields, function (res) {
+                                console.log("refNumber = ", res.data.value)
+                                var nmcCheckStatus = res.data[0].value;
+                                //checkRefToUpdate(refNumber, fields);
+
+                                if (nmcCheckStatus === "In Progress") {
+                                    setStartDates("3")
+                                }
+                            });
+                            break;
                         case "222404538712047": //Test App remove later
                             // fields = ["q5_nmcPin", "q6_doYou", "q7_whatIs", "q8_widgetStorage"];
                             fields = ["5", "12", "7", "11"];
@@ -216,6 +287,22 @@
                         default:
                             break;
                     }
+                }
+
+                function setStartDates(dateFieldToUpdate) {
+                    var today = new Date();
+                    var dd = String(today.getDate()).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                    var yyyy = today.getFullYear();
+
+                    var currDate = dd + '/' + mm + '/' + yyyy;
+                    var fillArr = [];
+                    fillArr.push({
+                        id: dateFieldToUpdate,
+                        value: currDate
+                    });
+                    console.log("fillArr = ", fillArr)
+                    JFCustomWidget.setFieldsValueById(fillArr);
                 }
 
                 function checkRefToUpdate(refNum, fieldsToGetValues) {
