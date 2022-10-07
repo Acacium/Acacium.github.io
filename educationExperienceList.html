@@ -193,6 +193,13 @@
         var numOfIncorrectDates = 0;
         var currFullWorkHistory = "No";
 
+        var _data = {
+            'valid': true,
+            'value': [],
+        };
+
+        var maxLimit;
+
         //Global functions
         function modFields(rowNumber, activityType) {
             console.log(activityType)
@@ -278,7 +285,7 @@
             }
         }
 
-        function getData(fieldToFill) {
+        function getData(fieldToFill, fullHis) {
             var tblData = $('tr').not(':first').map(function () {
                 var obj = {};
                 $(this).find('input, select, textarea').each(function () {
@@ -288,9 +295,12 @@
                 });
                 return obj;
             }).get();
+
             // console.log(JSON.stringify(tblData));
             JFCustomWidget.setFieldsValueById([{ id: fieldToFill, value: JSON.stringify(tblData) }]);
-            return { valid: true, value: JSON.stringify(tblData) };
+            _data.value = JSON.stringify(tblData)
+            console.log("_data = ", _data)
+            //return _data
         }
 
         function validateDates() {
@@ -330,6 +340,8 @@
                         JFCustomWidget.setFieldsValueById(dateDiffRes);
                         console.log("here")
                         numOfIncorrectDates = numOfIncorrectDates + 1
+                        _data.valid = false
+                        return false
                         //return { value: "Yes", valid: false };
                     }
                     else {
@@ -339,21 +351,23 @@
                         console.log("Valid dates = ", dateDiffRes)
                         JFCustomWidget.setFieldsValueById(dateDiffRes);
                         numOfIncorrectDates = numOfIncorrectDates - 1;
+                        _data.valid = true
+                        return true
                     }
                     //add coomments to array
                 }
             }
-            console.log(numOfIncorrectDates)
-            if (numOfIncorrectDates >= 1) {
-                document.getElementById("textArea").innerHTML = "The date(s) above highlighted in red have a gap greater then 1 month, please mention why in the field below";
-                // JFCustomWidget.sendData({ value: "Yes" });
-                resizeFrame();
-            }
-            else {
-                document.getElementById("textArea").innerHTML = "";
-                resizeFrame();
-                // JFCustomWidget.sendData({ value: "No" });
-            }
+            // console.log(numOfIncorrectDates)
+            // if (numOfIncorrectDates >= 1) {
+            //     document.getElementById("textArea").innerHTML = "The date(s) above highlighted in red have a gap greater then 1 month, please mention why in the field below";
+            //     // JFCustomWidget.sendData({ value: "Yes" });
+            //     resizeFrame();
+            // }
+            // else {
+            //     document.getElementById("textArea").innerHTML = "";
+            //     resizeFrame();
+            //     // JFCustomWidget.sendData({ value: "No" });
+            // }
         }
 
         function getMonthDifference(startDate, endDate) {
@@ -424,6 +438,7 @@
                 this.setCompanyNames = setCompanyNames;
                 this.resizeFrame = resizeFrame;
                 this.restoreTableData = restoreTableData;
+                //  this.makeWidgetRequiredOrNot = makeWidgetRequiredOrNot
 
                 const currMaxYear = maxYear();
 
@@ -453,6 +468,11 @@
 
                             yearOfBirth = (new Date(correctDateFormat)).getFullYear();
                             console.log("Year Of Birth = ", yearOfBirth);
+
+                            var schoolLeavingAge = yearOfBirth + 18
+                            var currYear = new Date().getFullYear();
+
+                            maxLimit = Math.abs(currYear - schoolLeavingAge);
                         });
                     }
                     // Create a condition that targets viewports at least 800px wide
@@ -477,14 +497,14 @@
                         addRow();
                     });
 
-                    $('input, select, textarea').on('change', JFCustomWidget.sendData(getData(fieldToStoreData)));
+                    $('input[id^="nameOfEmployer"]').on('input', function (event) {
+                        JFCustomWidget.sendData(getData(fieldToStoreData))
+                    })
+
+                    $('[id^="nameOfEmployer"]').on('touchstart click', function (e) { e.stopPropagation(); e.preventDefault(); console.log(this); });
+
                     $("input[type=date]").attr("min", currMaxYear);
-
                 }
-
-                // function makeWidgetRequiredOrNot() {
-
-                // }
 
                 function maxYear() {
                     var maxYearForDates;
@@ -503,29 +523,35 @@
 
                 function addRow(isPop, popData) {
                     if ($('input:invalid').length >= 1) {
+                        JFCustomWidget.showWidgetError("Please make sure that all fields are correctly filled in");
+                        JFCustomWidget.sendSubmit({ valid: false });
                         return
                     }
-                    var table = document.getElementById("emptbl");
-                    // GET TOTAL NUMBER OF ROWS 
-                    var x = table.rows.length;
-                    var id = "tbl" + x;
-                    var row = table.insertRow(x);
-                    row.id = id;
-                    // var rowNumberCell = row.insertCell(0);
-                    var moveButtonsCell = row.insertCell(0);
-                    var typeOfActivityCell = row.insertCell(1);
-                    var companyCell = row.insertCell(2);
-                    var institutionCell = row.insertCell(3);
-                    var startDateCell = row.insertCell(4);
-                    var endDateCell = row.insertCell(5);
-                    var positionHeldCell = row.insertCell(6);
-                    var gradeBandCell = row.insertCell(7)
-                    var resultsCell = row.insertCell(8);
-                    var commentsCell = row.insertCell(9);
-                    var deleteRowCell = row.insertCell(10);
-                    // rowNumberCell.outerHTML = `<th style="padding: 20px; fontSize:30px;" name="rowNumberColumn[]" id="rowNumber${x}">≡</th>`;
-                    moveButtonsCell.innerHTML = `<button type="button" id="upRow${x}" onclick="moveRowUp(${id})">Up</button> <button type="button" id="downRow${x}" onclick="moveRowDown(${id})">Down</button>`;
-                    typeOfActivityCell.innerHTML = `<select onchange="modFields(${x}, this.value)" name="Type of Activity" value="0" id="typeOfActivity${x}" required >
+                    else {
+                        JFCustomWidget.hideWidgetError();
+                        JFCustomWidget.sendSubmit({ valid: true });
+
+                        var table = document.getElementById("emptbl");
+                        // GET TOTAL NUMBER OF ROWS 
+                        var x = table.rows.length;
+                        var id = "tbl" + x;
+                        var row = table.insertRow(x);
+                        row.id = id;
+                        // var rowNumberCell = row.insertCell(0);
+                        var moveButtonsCell = row.insertCell(0);
+                        var typeOfActivityCell = row.insertCell(1);
+                        var companyCell = row.insertCell(2);
+                        var institutionCell = row.insertCell(3);
+                        var startDateCell = row.insertCell(4);
+                        var endDateCell = row.insertCell(5);
+                        var positionHeldCell = row.insertCell(6);
+                        var gradeBandCell = row.insertCell(7)
+                        var resultsCell = row.insertCell(8);
+                        var commentsCell = row.insertCell(9);
+                        var deleteRowCell = row.insertCell(10);
+                        // rowNumberCell.outerHTML = `<th style="padding: 20px; fontSize:30px;" name="rowNumberColumn[]" id="rowNumber${x}">≡</th>`;
+                        moveButtonsCell.innerHTML = `<button type="button" id="upRow${x}" onclick="moveRowUp(${id})">↑</button> <button type="button" id="downRow${x}" onclick="moveRowDown(${id})">↓</button>`;
+                        typeOfActivityCell.innerHTML = `<select onchange="modFields(${x}, this.value)" name="Type of Activity" value="0" id="typeOfActivity${x}" required >
                         <option value="">Select Type of activity</option>
                         <option value="Employed">Employed</option>
                         <option value="Traveling">Traveling</option>
@@ -533,32 +559,33 @@
                         <option value="Studying">Studying</option>
                         <option value="Other">Other</option>
                     </select>`;
-                    companyCell.innerHTML = `<input type="text" name="Name of Employer" value="" id="nameOfEmployer${x}" required />`;
-                    institutionCell.innerHTML = `<input type="text" name="Institution" value="" id="institution${x}" required />`;
-                    startDateCell.innerHTML = `<input type="date" name="Start Date" min=${currMaxYear} onchange="validateDates()" value="" id="startDate${x}" required />`;
-                    endDateCell.innerHTML = `<input type="date" name="End Date" min=${currMaxYear} onchange="validateDates()" value="" id="endDate${x}" />`;
-                    positionHeldCell.innerHTML = `<input type="text" name="Position Held" value="" id="positionHeld${x}" required />`;
-                    gradeBandCell.innerHTML = `<input type="text" name="Grade/Band" value="" id="gradeBand${x}" required />`;
-                    resultsCell.innerHTML = `<input type="text" name="Results" value="" id="results${x}" required />`;
-                    commentsCell.innerHTML = `<textarea type="text" name="Comments" value="" id="comments${x}" required />`;
-                    deleteRowCell.innerHTML = `<button type="button" id="deleteRow${x}" onclick="deleteRow(${x})">Delete</button>`;
+                        companyCell.innerHTML = `<input type="text" name="Name of Employer" value="" id="nameOfEmployer${x}" required />`;
+                        institutionCell.innerHTML = `<input type="text" name="Institution" value="" id="institution${x}" required />`;
+                        startDateCell.innerHTML = `<input type="date" name="Start Date" min=${currMaxYear} onchange="validateDates()" value="" id="startDate${x}" required />`;
+                        endDateCell.innerHTML = `<input type="date" name="End Date" min=${currMaxYear} onchange="validateDates()" value="" id="endDate${x}" />`;
+                        positionHeldCell.innerHTML = `<input type="text" name="Position Held" value="" id="positionHeld${x}" required />`;
+                        gradeBandCell.innerHTML = `<input type="text" name="Grade/Band" value="" id="gradeBand${x}" required />`;
+                        resultsCell.innerHTML = `<input type="text" name="Results" value="" id="results${x}" required />`;
+                        commentsCell.innerHTML = `<textarea type="text" name="Comments" value="" id="comments${x}" required />`;
+                        deleteRowCell.innerHTML = `<button type="button" id="deleteRow${x}" onclick="deleteRow(${x})">Delete</button>`;
 
-                    //set values
-                    if (isPop) {
-                        document.getElementById(`typeOfActivity${x}`).value = popData["Type of Activity"] ?? "";
-                        modFields(x, popData["Type of Activity"] ?? "");
-                        document.getElementById(`nameOfEmployer${x}`).value = popData["Name of Employer"] ?? "";
-                        document.getElementById(`institution${x}`).value = popData["Institution"] ?? "";
-                        document.getElementById(`startDate${x}`).value = popData["Start Date"] ?? "";
-                        document.getElementById(`endDate${x}`).value = popData["End Date"] ?? "";
-                        document.getElementById(`positionHeld${x}`).value = popData["Position Held"] ?? "";
-                        document.getElementById(`gradeBand${x}`).value = popData["Grade/Band"] ?? "";
-                        document.getElementById(`results${x}`).value = popData["Results"] ?? "";
-                        document.getElementById(`comments${x}`).value = popData["Comments"] ?? ""
+                        //set values
+                        if (isPop) {
+                            document.getElementById(`typeOfActivity${x}`).value = popData["Type of Activity"] ?? "";
+                            modFields(x, popData["Type of Activity"] ?? "");
+                            document.getElementById(`nameOfEmployer${x}`).value = popData["Name of Employer"] ?? "";
+                            document.getElementById(`institution${x}`).value = popData["Institution"] ?? "";
+                            document.getElementById(`startDate${x}`).value = popData["Start Date"] ?? "";
+                            document.getElementById(`endDate${x}`).value = popData["End Date"] ?? "";
+                            document.getElementById(`positionHeld${x}`).value = popData["Position Held"] ?? "";
+                            document.getElementById(`gradeBand${x}`).value = popData["Grade/Band"] ?? "";
+                            document.getElementById(`results${x}`).value = popData["Results"] ?? "";
+                            document.getElementById(`comments${x}`).value = popData["Comments"] ?? ""
+                        }
+
+                        resizeFrame();
+                        JFCustomWidget.sendData(getData(fieldToStoreData));
                     }
-
-                    resizeFrame();
-                    JFCustomWidget.sendData(getData(fieldToStoreData));
                 }
 
                 function getCompanyNames() {
@@ -615,10 +642,15 @@
                 widget.init();
                 widget.resizeFrame();
 
+                var currParams = JFCustomWidget.getWidgetSettings();
+                if (currParams.fullWorkHistory === "No") {
+                    maxLimit = 5;
+                }
+
                 JFCustomWidget.subscribe('populate', fillConditionValue);
 
                 function fillConditionValue(data) {
-                    JFCustomWidget.hideWidgetError();
+                    // JFCustomWidget.hideWidgetError();
 
                     var tbl = document.getElementById("emptbl");
 
@@ -634,23 +666,106 @@
 
                 console.log(JFCustomWidget)
 
-                JFCustomWidget.subscribe('submit', function () {
+                JFCustomWidget.subscribe('submit', function (data6) {
+                    console.log(data6)
+                    // console.log("year of birth ", yearOfBirth)
                     const widgetParm = JFCustomWidget.getWidgetSettings();
                     if (widgetParm["fullWorkHistory"] === "No") {
                         widget.setCompanyNames([widgetParm["companyField1"], widgetParm["companyField2"], widgetParm["companyField3"], widgetParm["companyField4"], widgetParm["companyField5"], widgetParm["companyField6"]]);
+                        makeWidgetRequiredOrNot()
+                        JFCustomWidget.sendSubmit(_data);
+                    }
+                    else if (widgetParm["fullWorkHistory"] === "Yes") {
+                        makeWidgetRequiredOrNot()
+                        JFCustomWidget.sendSubmit(_data);
                     }
 
                     console.log(widgetParm["storageField"]);
 
                     // send the data
-                    JFCustomWidget.sendSubmit(widget.getData(widgetParm["storageField"]));
+                    // JFCustomWidget.sendSubmit(widget.getData(widgetParm["storageField"]));
                 });
 
             });
         })
 
+
+        function makeWidgetRequiredOrNot() {
+            console.log("here")
+            //Validate years since school leaving age
+
+            if ($('input:invalid').length >= 1) {
+                console.log(JFCustomWidget.isWidgetRequired())
+                //JFCustomWidget.makeWidgetRequired();
+                JFCustomWidget.showWidgetError("Please make sure that all fields are correctly filled in")
+                _data.valid = false
+                return
+            }
+            if (validateWidget() === false) {
+                _data.valid = false
+                //JFCustomWidget.makeWidgetRequired();
+                //JFCustomWidget.showWidgetError("Please make sure that all fields are correctly filled in")
+                return
+            }
+            if (validateDates() === false) {
+                _data.valid = false
+                // JFCustomWidget.makeWidgetRequired();
+                JFCustomWidget.showWidgetError("The date(s) above highlighted in red have a gap greater then 1 month, please mention why in the field below")
+                return
+            }
+            else {
+                JFCustomWidget.makeWidgetNotRequired();
+                JFCustomWidget.hideWidgetError();
+                _data.valid = true
+                return
+            }
+        }
+
+        function validateWidget() {
+            const currRowLength = document.getElementsByName("Start Date")?.length
+            var dateDiffSum = 0;
+            var testArr = [];
+            var totalYears;
+
+            for (let i = 0; i < currRowLength; i++) {
+                let currEndDate = document.getElementsByName("End Date")[i]?.value; //check undefinded
+                let currStartDate = document.getElementsByName("Start Date")[i]?.value; //check undefinded
+
+                testArr.push(currStartDate, currEndDate)
+
+                var diffDays = parseInt((new Date(currEndDate) - new Date(currStartDate)) / (1000 * 60 * 60 * 24), 10);
+
+                dateDiffSum = dateDiffSum + diffDays
+            }
+            console.log(dateDiffSum);
+            console.log("curr dates = ", testArr);
+            totalYears = Math.floor(dateDiffSum / 365)
+
+            if (totalYears < maxLimit) {
+                JFCustomWidget.showWidgetError("Please make sure you've listed all posts held in the last " + maxLimit + " years")
+                JFCustomWidget.sendSubmit({ valid: false });
+                return false
+            }
+            else {
+                JFCustomWidget.hideWidgetError();
+                JFCustomWidget.sendSubmit({ valid: true });
+                return true
+            }
+        }
+
+        // function test01() {
+        //     JFCustomWidget.sendSubmit({ value: "True", valid: true });
+        // }
+
+        // function test02() {
+        //     validateWidget()
+        //     JFCustomWidget.showWidgetError("Please make sure that all fields are correctly filled in")
+        //     JFCustomWidget.sendSubmit({ value: "False", valid: false });
+        // }
+
     </script>
-    <form style="overflow:auto; width: 100%;" id="educationExperienceList[]" name="educationExperienceList" action="#">
+    <form style="overflow:auto; width: 100%;" id="educationExperienceList[]" name="educationExperienceList" action="#"
+        onchange="makeWidgetRequiredOrNot()">
         <table id="emptbl">
             <tbody>
                 <tr id="tblHeading">
@@ -672,6 +787,8 @@
         <table>
             <tr>
                 <button type="button" id="addRowButton">Add Row</button>
+                <!-- <button type="button" id="test1" onclick="test01()"> True </button>
+                <button type="button" id="test2" onclick="test02()"> False </button> -->
                 <span>
                     <p id="textArea"></p>
                 </span>
