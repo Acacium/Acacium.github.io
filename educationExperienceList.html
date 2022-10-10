@@ -300,7 +300,7 @@
             JFCustomWidget.setFieldsValueById([{ id: fieldToFill, value: JSON.stringify(tblData) }]);
             _data.value = JSON.stringify(tblData)
             console.log("_data = ", _data)
-            //return _data
+            return _data
         }
 
         function validateDates() {
@@ -495,13 +495,10 @@
 
                     $('#addRowButton').on('click', function (event) {
                         addRow();
+                        makeWidgetRequiredOrNot();
                     });
 
-                    $('input[id^="nameOfEmployer"]').on('input', function (event) {
-                        JFCustomWidget.sendData(getData(fieldToStoreData))
-                    })
-
-                    $('[id^="nameOfEmployer"]').on('touchstart click', function (e) { e.stopPropagation(); e.preventDefault(); console.log(this); });
+                    $('input, select, textarea').on('change', JFCustomWidget.sendData(getData(fieldToStoreData)));
 
                     $("input[type=date]").attr("min", currMaxYear);
                 }
@@ -673,11 +670,11 @@
                     if (widgetParm["fullWorkHistory"] === "No") {
                         widget.setCompanyNames([widgetParm["companyField1"], widgetParm["companyField2"], widgetParm["companyField3"], widgetParm["companyField4"], widgetParm["companyField5"], widgetParm["companyField6"]]);
                         makeWidgetRequiredOrNot()
-                        JFCustomWidget.sendSubmit(_data);
+                        JFCustomWidget.sendSubmit(getData(widgetParm["storageField"]));
                     }
                     else if (widgetParm["fullWorkHistory"] === "Yes") {
                         makeWidgetRequiredOrNot()
-                        JFCustomWidget.sendSubmit(_data);
+                        JFCustomWidget.sendSubmit(getData(widgetParm["storageField"]));
                     }
 
                     console.log(widgetParm["storageField"]);
