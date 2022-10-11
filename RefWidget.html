@@ -100,7 +100,7 @@
                                 if (currTaskList[i]?.properties?.taskName === approvalName) {
                                     currTaskId = currTaskList[i]?.id;
                                     console.log(currTaskId);
-                                    return
+                                    return currTaskId
                                 }
                             }
                             return
@@ -203,95 +203,6 @@
                                 checkRefToUpdate(refNumber, fields);
                             });
                             break;
-                        case "221914243957359":
-                            //Ops control
-                            fields = ["applicationStatus78", "nmcCheck", "hirevueAccount", "additionalInformation33", "referee167", "referee268", "referee372", "referee4127", "referee5136",
-                                "referee6145", "additionalInformation34", "occupationalHealth158", "dbsCheck"]
-                            // fields = ["13", "16", "282", "283"];
-                            JFCustomWidget.getFieldsValueByName(fields, function (res) {
-                                console.log("opsStatus = ", res.data.value)
-                                var applicationCheckStatus = res.data[0].value;
-                                var nmcCheckStatus = res.data[1].value;
-                                var hirevueAccountCheckStatus = res.data[2].value;
-                                var onBoardCheckStatus = res.data[3].value;
-                                var ref1CheckStatus = res.data[4].value;
-                                var ref2CheckStatus = res.data[5].value;
-                                var ref3CheckStatus = res.data[6].value;
-                                var ref4CheckStatus = res.data[7].value;
-                                var ref5CheckStatus = res.data[8].value;
-                                var ref6CheckStatus = res.data[9].value;
-                                var termPackCheckStatus = res.data[10].value;
-                                var occHealthCheckStatus = res.data[11].value;
-                                var dbsCheckStatus = res.data[12].value;
-                                //checkRefToUpdate(refNumber, fields);
-
-                                if (applicationCheckStatus === "Accepted" && appCheckStatusAlreadyRan != true) {
-                                    getTaskId("Is the application valid?");
-                                    appCheckStatusAlreadyRan = true;
-                                    return
-                                }
-                                if (nmcCheckStatus === "Successful" && nmcCheckStatusAlreadyRan != true) {
-                                    getTaskId("Is the NMC Pin valid?");
-                                    nmcCheckStatusAlreadyRan = true;
-                                    return
-                                }
-                                if (hirevueAccountCheckStatus === "Successful" && hirevueAccountCheckStatusAlreadyRan != true) {
-                                    getTaskId("Is the HireVue Complete?");
-                                    hirevueAccountCheckStatusAlreadyRan = true;
-                                    return
-                                }
-                                if (onBoardCheckStatus === "Accepted" && onBoardCheckStatusAlreadyRan != true) {
-                                    getTaskId("Can you confirm you have received the onboarding pack?");
-                                    onBoardCheckStatusAlreadyRan = true;
-                                    return
-                                }
-                                if (ref1CheckStatus === "Response Approved" && ref1CheckStatusAlreadyRan != true) {
-                                    getTaskId("Is Ref 1 valid?");
-                                    ref1CheckStatusAlreadyRan = true;
-                                    return
-                                }
-                                if (ref2CheckStatus === "Response Approved" && ref2CheckStatusAlreadyRan != true) {
-                                    getTaskId("Is Ref 2 valid?");
-                                    ref2CheckStatusAlreadyRan = true;
-                                    return
-                                }
-                                if (ref3CheckStatus === "Response Approved" && ref3CheckStatusAlreadyRan != true) {
-                                    getTaskId("Is Ref 3 valid?");
-                                    ref3CheckStatusAlreadyRan = true;
-                                    return
-                                }
-                                if (ref4CheckStatus === "Response Approved" && ref4CheckStatusAlreadyRan != true) {
-                                    getTaskId("Is Ref 4 valid?");
-                                    ref4CheckStatusAlreadyRan = true;
-                                    return
-                                }
-                                if (ref5CheckStatus === "Response Approved" && ref5CheckStatusAlreadyRan != true) {
-                                    getTaskId("Is Ref 5 valid?");
-                                    ref5CheckStatusAlreadyRan = true;
-                                    return
-                                }
-                                if (ref6CheckStatus === "Response Approved" && ref6CheckStatusAlreadyRan != true) {
-                                    getTaskId("Is Ref 6 valid?");
-                                    ref6CheckStatusAlreadyRan = true;
-                                    return
-                                }
-                                if (termPackCheckStatus === "Accepted" && termPackCheckStatusAlreadyRan != true) {
-                                    getTaskId("Is the Terms and Conditions Pack valid?");
-                                    termPackCheckStatusAlreadyRan = true;
-                                    return
-                                }
-                                if (occHealthCheckStatus === "Successful" && occHealthCheckStatusAlreadyRan != true) {
-                                    getTaskId("DBS Check Complete?");
-                                    occHealthCheckStatusAlreadyRan = true;
-                                    return
-                                }
-                                if (dbsCheckStatus === "Successful" && dbsCheckStatusAlreadyRan != true) {
-                                    getTaskId("DBS Check Complete?");
-                                    dbsCheckStatusAlreadyRan = true;
-                                    return
-                                }
-                            });
-                            break;
                         case "222793557017057": //Test Remove later
                             fields = ["typeA"]
                             // fields = ["13", "16", "282", "283"];
@@ -347,6 +258,85 @@
                     });
                     console.log("fillArr = ", fillArr)
                     JFCustomWidget.setFieldsValueById(fillArr);
+                }
+
+                function getApprovedTasks() {
+                    var taskIdArr = []
+                    //Ops control
+                    fields = ["applicationStatus78", "nmcCheck", "hirevueAccount", "additionalInformation33", "referee167", "referee268", "referee372", "referee4127", "referee5136",
+                        "referee6145", "additionalInformation34", "occupationalHealth158", "dbsCheck"]
+                    // fields = ["13", "16", "282", "283"];
+                    JFCustomWidget.getFieldsValueByName(fields, function (res) {
+                        console.log("opsStatus = ", res.data.value)
+                        var applicationCheckStatus = res.data[0].value;
+                        var nmcCheckStatus = res.data[1].value;
+                        var hirevueAccountCheckStatus = res.data[2].value;
+                        var onBoardCheckStatus = res.data[3].value;
+                        var ref1CheckStatus = res.data[4].value;
+                        var ref2CheckStatus = res.data[5].value;
+                        var ref3CheckStatus = res.data[6].value;
+                        var ref4CheckStatus = res.data[7].value;
+                        var ref5CheckStatus = res.data[8].value;
+                        var ref6CheckStatus = res.data[9].value;
+                        var termPackCheckStatus = res.data[10].value;
+                        var occHealthCheckStatus = res.data[11].value;
+                        var dbsCheckStatus = res.data[12].value;
+                        //checkRefToUpdate(refNumber, fields);
+
+                        if (applicationCheckStatus === "Accepted") {
+                            taskIdArr.push(getTaskId("Is the application valid?"));
+                            // appCheckStatusAlreadyRan = true;
+                        }
+                        if (nmcCheckStatus === "Successful") {
+                            taskIdArr.push(getTaskId("Is the NMC Pin valid?"));
+                            // nmcCheckStatusAlreadyRan = true;
+                        }
+                        if (hirevueAccountCheckStatus === "Successful") {
+                            taskIdArr.push(getTaskId("Is the HireVue Complete?"));
+                            // hirevueAccountCheckStatusAlreadyRan = true;
+                        }
+                        if (onBoardCheckStatus === "Accepted") {
+                            taskIdArr.push(getTaskId("Can you confirm you have received the onboarding pack?"));
+                            // onBoardCheckStatusAlreadyRan = true;
+                        }
+                        if (ref1CheckStatus === "Response Approved") {
+                            taskIdArr.push(getTaskId("Is Ref 1 valid?"));
+                            // ref1CheckStatusAlreadyRan = true;
+                        }
+                        if (ref2CheckStatus === "Response Approved") {
+                            taskIdArr.push(getTaskId("Is Ref 2 valid?"));
+                            // ref2CheckStatusAlreadyRan = true;
+                        }
+                        if (ref3CheckStatus === "Response Approved") {
+                            taskIdArr.push(getTaskId("Is Ref 3 valid?"));
+                            // ref3CheckStatusAlreadyRan = true;
+                        }
+                        if (ref4CheckStatus === "Response Approved") {
+                            taskIdArr.push(getTaskId("Is Ref 4 valid?"));
+                            // ref4CheckStatusAlreadyRan = true;
+                        }
+                        if (ref5CheckStatus === "Response Approved") {
+                            taskIdArr.push(getTaskId("Is Ref 5 valid?"))
+                            // ref5CheckStatusAlreadyRan = true;
+                        }
+                        if (ref6CheckStatus === "Response Approved") {
+                            taskIdArr.push(getTaskId("Is Ref 6 valid?"))
+                            // ref6CheckStatusAlreadyRan = true;
+                        }
+                        if (termPackCheckStatus === "Accepted") {
+                            taskIdArr.push(getTaskId("Is the Terms and Conditions Pack valid?"))
+                            // termPackCheckStatusAlreadyRan = true;
+                        }
+                        if (occHealthCheckStatus === "Successful") {
+                            taskIdArr.push(getTaskId("DBS Check Complete?"))
+                            // occHealthCheckStatusAlreadyRan = true;
+                        }
+                        if (dbsCheckStatus === "Successful") {
+                            taskIdArr.push(getTaskId("DBS Check Complete?"));
+                            // dbsCheckStatusAlreadyRan = true;
+                        }
+                        return taskIdArr;
+                    });
                 }
 
                 function checkRefToUpdate(refNum, fieldsToGetValues) {
@@ -482,6 +472,12 @@
                     widget.updateOriginalSubmission(widgetParams["apiKey"]);
                     if (currTaskId !== undefined && currTaskId !== "") {
                         widget.markRefAsComplete(currTaskId);
+                    }
+                    if (data["formID"] === "221914243957359") {
+                        var completedTasks = getApprovedTasks();
+                        for (let i = 0; i < completedTasks.length; i++) {
+                            widget.markRefAsComplete(completedTasks[i])
+                        }
                     }
 
                     // send the data
