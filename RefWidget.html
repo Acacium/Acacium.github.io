@@ -43,6 +43,7 @@
                 this.init = init;
                 this.updateOriginalSubmission = updateOriginalSubmission;
                 this.markRefAsComplete = markRefAsComplete;
+                this.getApprovedTasks = getApprovedTasks;
 
 
                 var currFormID = formData["formID"];
@@ -474,7 +475,7 @@
                         widget.markRefAsComplete(currTaskId);
                     }
                     if (data["formID"] === "221914243957359") {
-                        var completedTasks = getApprovedTasks();
+                        var completedTasks = widget.getApprovedTasks();
                         for (let i = 0; i < completedTasks.length; i++) {
                             widget.markRefAsComplete(completedTasks[i])
                         }
