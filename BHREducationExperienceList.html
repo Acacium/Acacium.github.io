@@ -658,6 +658,7 @@
 
 
         function makeWidgetRequiredOrNot() {
+            console.log("curr params = ", currParams)
             if (typeof maxLimit != "number") {
                 JFCustomWidget.getFieldsValueById(["39"], function (res) {
                     console.log("res by Name= ", res.data[0].value);
