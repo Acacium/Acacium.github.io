@@ -192,6 +192,7 @@
 
         var numOfIncorrectDates = 0;
         var currFullWorkHistory = "No";
+        var currParams;
 
         var _data = {
             'valid': true,
@@ -421,6 +422,7 @@
 
                 var yearOfBirth;
                 var fieldToStoreData = params["storageField"];
+                currParams = params
 
                 /**
                * Exposed
@@ -609,10 +611,10 @@
                 widget.init();
                 widget.resizeFrame();
 
-                var currParams = JFCustomWidget.getWidgetSettings();
-                if (currParams.fullWorkHistory === "No") {
-                    maxLimit = 5;
-                }
+                // var currParams = JFCustomWidget.getWidgetSettings();
+                // if (currParams.fullWorkHistory === "No") {
+                //     maxLimit = 5;
+                // }
 
                 JFCustomWidget.subscribe('populate', fillConditionValue);
 
