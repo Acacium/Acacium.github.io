@@ -309,18 +309,10 @@
             for (let i = 0; i < currRowLength; i++) {
                 let currEndDate = document.getElementsByName("End Date")[i]?.value; //check undefinded
                 let currStartDate = document.getElementsByName("Start Date")[i + 1]?.value; //check undefinded
-                if (currFullWorkHistory === "Yes") {
-                    var dateDiffRes = [{
-                        id: "471",
-                        value: ""
-                    }]
-                }
-                else {
-                    var dateDiffRes = [{
-                        id: "439",
-                        value: ""
-                    }]
-                }
+                var dateDiffRes = [{
+                    id: "471",
+                    value: ""
+                }]
                 console.log("EmpTo", currEndDate)
                 console.log("EmpFrom", currStartDate)
                 if (currEndDate != null && currStartDate != null) {
