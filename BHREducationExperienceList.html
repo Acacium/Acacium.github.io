@@ -429,7 +429,7 @@
                */
                 this.init = init;
                 this.getData = getData;
-                this.setCompanyNames = setCompanyNames;
+                // this.setCompanyNames = setCompanyNames;
                 this.resizeFrame = resizeFrame;
                 this.restoreTableData = restoreTableData;
                 //  this.makeWidgetRequiredOrNot = makeWidgetRequiredOrNot
@@ -557,23 +557,6 @@
                     }
                 }
 
-                function getCompanyNames() {
-                    const currRowLength = document.getElementsByName("Name of Hospital/Employer")?.length
-                    console.log("Employer by name = ", document.getElementsByName("Name of Hospital/Employer"))
-                    let arr = []
-                    for (let i = 0; i < currRowLength; i++) {
-                        let currNameOfEmployer = document.getElementsByName("Name of Hospital/Employer")[i]?.value; //check undefinded
-                        // let currActType = document.getElementsByName("Type of Activity")[i]?.value; //check undefinded
-                        // console.log("Em", currActType)
-                        console.log("nameEm", currNameOfEmployer)
-                        if (currNameOfEmployer != null && arr.length < 6) {
-                            arr.push(currNameOfEmployer);
-                        }
-                    }
-                    console.log("arr length = ", arr.length)
-                    return arr;
-                }
-
                 function restoreTableData(dataObj) {
                     try {
                         dataObj.forEach(function (obj) {
@@ -587,21 +570,6 @@
                         console.log(error)
                         return
                     }
-                }
-
-                function setCompanyNames(fieldIds) {
-                    let currNames = getCompanyNames();
-                    let fillArr = []
-                    for (let i = 0; i < fieldIds.length; i++) {
-                        if (currNames[i] !== undefined && currNames[i] !== "") {
-                            fillArr.push({
-                                id: fieldIds[i],
-                                value: currNames[i]
-                            })
-                        }
-                    }
-                    JFCustomWidget.setFieldsValueById(fillArr);
-                    console.log(fillArr)
                 }
             }
 
@@ -658,6 +626,37 @@
             });
         })
 
+        function getCompanyNames() {
+            const currRowLength = document.getElementsByName("Name of Hospital/Employer")?.length
+            console.log("Employer by name = ", document.getElementsByName("Name of Hospital/Employer"))
+            let arr = []
+            for (let i = 0; i < currRowLength; i++) {
+                let currNameOfEmployer = document.getElementsByName("Name of Hospital/Employer")[i]?.value; //check undefinded
+                // let currActType = document.getElementsByName("Type of Activity")[i]?.value; //check undefinded
+                // console.log("Em", currActType)
+                console.log("nameEm", currNameOfEmployer)
+                if (currNameOfEmployer != null && arr.length < 6) {
+                    arr.push(currNameOfEmployer);
+                }
+            }
+            console.log("arr length = ", arr.length)
+            return arr;
+        }
+
+        function setCompanyNames(fieldIds) {
+            let currNames = getCompanyNames();
+            let fillArr = []
+            for (let i = 0; i < fieldIds.length; i++) {
+                if (currNames[i] !== undefined && currNames[i] !== "") {
+                    fillArr.push({
+                        id: fieldIds[i],
+                        value: currNames[i]
+                    })
+                }
+            }
+            JFCustomWidget.setFieldsValueById(fillArr);
+            console.log(fillArr)
+        }
 
         function makeWidgetRequiredOrNot() {
             console.log("curr params = ", currParams);
