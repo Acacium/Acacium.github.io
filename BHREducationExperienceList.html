@@ -662,29 +662,29 @@
         function makeWidgetRequiredOrNot() {
             console.log("curr params = ", currParams);
             if (currParams != undefined) {
-                widget.setCompanyNames([currParams["companyField1"], currParams["companyField2"], currParams["companyField3"], currParams["companyField4"], currParams["companyField5"], currParams["companyField6"]]);
+                setCompanyNames([currParams["companyField1"], currParams["companyField2"], currParams["companyField3"], currParams["companyField4"], currParams["companyField5"], currParams["companyField6"]]);
             }
-            // if (typeof maxLimit != "number") {
-            //     JFCustomWidget.getFieldsValueById(["39"], function (res) {
-            //         console.log("res by Name= ", res.data[0].value);
-            //         const strDate = res.data[0].value;
+            if (typeof maxLimit != "number") {
+                JFCustomWidget.getFieldsValueById(["39"], function (res) {
+                    console.log("res by Name= ", res.data[0].value);
+                    const strDate = res.data[0].value;
 
-            //         const [day, month, year] = strDate.split('/');
-            //         console.log(month);
-            //         console.log(day);
-            //         console.log(year);
-            //         const correctDateFormat = new Date(+year, +month - 1, +day);
-            //         console.log(correctDateFormat);
+                    const [day, month, year] = strDate.split('/');
+                    console.log(month);
+                    console.log(day);
+                    console.log(year);
+                    const correctDateFormat = new Date(+year, +month - 1, +day);
+                    console.log(correctDateFormat);
 
-            //         yearOfBirth = (new Date(correctDateFormat)).getFullYear();
-            //         console.log("Year Of Birth = ", yearOfBirth);
+                    yearOfBirth = (new Date(correctDateFormat)).getFullYear();
+                    console.log("Year Of Birth = ", yearOfBirth);
 
-            //         var schoolLeavingAge = yearOfBirth + 18
-            //         var currYear = new Date().getFullYear();
+                    var schoolLeavingAge = yearOfBirth + 18
+                    var currYear = new Date().getFullYear();
 
-            //         maxLimit = Math.abs(currYear - schoolLeavingAge);
-            //     })
-            // }
+                    maxLimit = Math.abs(currYear - schoolLeavingAge);
+                })
+            }
 
             console.log("here")
             //Validate years since school leaving age
