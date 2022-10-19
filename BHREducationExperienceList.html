@@ -301,7 +301,7 @@
                 let currStartDate = document.getElementsByName("Start Date")[i + 1]?.value; //check undefinded
                 if (currFullWorkHistory === "Yes") {
                     var dateDiffRes = [{
-                        id: "215",
+                        id: "471",
                         value: ""
                     }]
                 }
@@ -440,7 +440,7 @@
                         restoreTableData(JSON.parse(formData.value))
                     }
                     if (params["fullWorkHistory"] === "Yes") {
-                        JFCustomWidget.getFieldsValueById(["11"], function (res) {
+                        JFCustomWidget.getFieldsValueById(["39"], function (res) {
                             console.log("res by Name= ", res.data[0].value);
                             const strDate = res.data[0].value;
 
@@ -523,8 +523,8 @@
                     moveButtonsCell.innerHTML = `<button type="button" id="upRow${x}" onclick="moveRowUp(${id})">Up</button> <button type="button" id="downRow${x}" onclick="moveRowDown(${id})">Down</button>`;
                     nameOfHosOrEmployer.innerHTML = `<input type="text" name="Name of Hospital/Employer" value="" id="nameOfHosOrEmployer${x}" required />`;
                     positionHeldCell.innerHTML = `<input type="text" name="Position Held" value="" id="positionHeld${x}" required />`;
-                    startDateCell.innerHTML = `<input type="date" name="Start Date" min=${currMaxYear} onchange="validateDates()" value="" id="startDate${x}" required />`;
-                    endDateCell.innerHTML = `<input type="date" name="End Date" min=${currMaxYear} onchange="validateDates()" value="" id="endDate${x}" />`;
+                    startDateCell.innerHTML = `<input type="date" name="Start Date" onchange="validateDates()" value="" id="startDate${x}" required />`;
+                    endDateCell.innerHTML = `<input type="date" name="End Date" onchange="validateDates()" value="" id="endDate${x}" />`;
                     commentsCell.innerHTML = `<textarea type="text" name="Comments" value="" id="comments${x}" required />`;
                     deleteRowCell.innerHTML = `<button type="button" id="deleteRow${x}" onclick="deleteRow(${x})">Delete</button>`;
 
