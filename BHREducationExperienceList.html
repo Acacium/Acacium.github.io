@@ -632,8 +632,11 @@
             let arr = []
             for (let i = 0; i < currRowLength; i++) {
                 let currNameOfEmployer = document.getElementsByName("Name of Hospital/Employer")[i]?.value; //check undefinded
-                let currEmStartDate = document.getElementsByName("Start Date")[i]?.value; //check undefinded
-                let currEmEndDate = document.getElementsByName("End Date")[i]?.value; //check undefinded
+                var currEmStartDate = document.getElementsByName("Start Date")[i]?.value; //check undefinded
+                var currEmEndDate = document.getElementsByName("End Date")[i]?.value; //check undefinded
+
+                currEmStartDate = currEmStartDate.getTime();
+                currEmEndDate = currEmEndDate.getTime()
 
                 // let currActType = document.getElementsByName("Type of Activity")[i]?.value; //check undefinded
                 console.log("nameEm", currNameOfEmployer)
