@@ -640,8 +640,8 @@
                 console.log("emStartDate = ", currEmStartDate)
                 console.log("emEndDate = ", currEmEndDate)
 
-                if (currNameOfEmployer != null && arr.length < 6) {
-                    arr.push(currNameOfEmployer);
+                if (currNameOfEmployer != null && arr.length < 18) {
+                    arr.push(currNameOfEmployer, currEmStartDate, currEmEndDate);
                 }
             }
             console.log("arr length = ", arr.length)
@@ -678,7 +678,7 @@
                 var fieldsToFill = currParams.storageField.split(",");
 
                 console.log(fieldsToFill);
-                setCompanyNames([currParams["companyField1"], currParams["companyField2"], currParams["companyField3"], currParams["companyField4"], currParams["companyField5"], currParams["companyField6"]]);
+                setCompanyNames(fieldsToFill);
             }
             if (typeof maxLimit != "number") {
                 JFCustomWidget.getFieldsValueById(["39"], function (res) {
