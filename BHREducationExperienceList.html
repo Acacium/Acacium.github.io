@@ -635,8 +635,8 @@
                 var currEmStartDate = document.getElementsByName("Start Date")[i]?.value; //check undefinded
                 var currEmEndDate = document.getElementsByName("End Date")[i]?.value; //check undefinded
 
-                currEmStartDate = new Date(currEmStartDate).getTime();
-                currEmEndDate = new Date(currEmEndDate).getTime();
+                currEmStartDate = new Date(currEmStartDate).getTime().toString();
+                currEmEndDate = new Date(currEmEndDate).getTime().toString();
 
                 // let currActType = document.getElementsByName("Type of Activity")[i]?.value; //check undefinded
                 console.log("nameEm", currNameOfEmployer)
