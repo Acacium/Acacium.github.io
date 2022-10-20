@@ -632,9 +632,14 @@
             let arr = []
             for (let i = 0; i < currRowLength; i++) {
                 let currNameOfEmployer = document.getElementsByName("Name of Hospital/Employer")[i]?.value; //check undefinded
+                let currEmStartDate = document.getElementsByName("Start Date")[i]?.value; //check undefinded
+                let currEmEndDate = document.getElementsByName("End Date")[i]?.value; //check undefinded
+
                 // let currActType = document.getElementsByName("Type of Activity")[i]?.value; //check undefinded
-                // console.log("Em", currActType)
                 console.log("nameEm", currNameOfEmployer)
+                console.log("emStartDate = ", currEmStartDate)
+                console.log("emEndDate = ", currEmEndDate)
+
                 if (currNameOfEmployer != null && arr.length < 6) {
                     arr.push(currNameOfEmployer);
                 }
@@ -661,6 +666,18 @@
         function makeWidgetRequiredOrNot() {
             console.log("curr params = ", currParams);
             if (currParams != undefined) {
+                // 91, 445, 446 //Ref 1
+                // 103, 447, 448 //Ref 2
+                // 114, 449, 450 //Ref 3
+                // 382, 451, 452 //Ref 4
+                // 392, 453, 454 //Ref 5
+                // 402, 455, 456 //Ref 6
+
+                console.log(currParams.storageField);
+
+                var fieldsToFill = currParams.storageField.split(",");
+
+                console.log(fieldsToFill);
                 setCompanyNames([currParams["companyField1"], currParams["companyField2"], currParams["companyField3"], currParams["companyField4"], currParams["companyField5"], currParams["companyField6"]]);
             }
             if (typeof maxLimit != "number") {
