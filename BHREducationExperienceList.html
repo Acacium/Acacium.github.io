@@ -635,8 +635,13 @@
                 var currEmStartDate = document.getElementsByName("Start Date")[i]?.value; //check undefinded
                 var currEmEndDate = document.getElementsByName("End Date")[i]?.value; //check undefinded
 
-                currEmStartDate = `{"day":"12", "month":"02", "year":"2022"}`;
-                currEmEndDate = `"day":"12", "month":"02", "year":"2022"`;
+                currEmStartDate = {
+                    "day": "21",
+                    "month": "04",
+                    "year": "2001",
+                    //"datetime": "1985-04-21 00:00:00"
+                };
+                currEmEndDate = `day:12, month:02, year:2022`;
 
                 // let currActType = document.getElementsByName("Type of Activity")[i]?.value; //check undefinded
                 console.log("nameEm", currNameOfEmployer)
