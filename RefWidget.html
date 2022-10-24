@@ -461,6 +461,8 @@
             JFCustomWidget.subscribe('ready', function (data) {
                 var widget = new UpdateControlForm('Test01', data, JFCustomWidget.getWidgetSettings());
                 widget.init();
+                var completedTasks = widget.getApprovedTasks();
+                console.log(completedTasks)
 
                 JFCustomWidget.subscribe('populate', fillConditionValue);
 
@@ -475,10 +477,10 @@
                         widget.markRefAsComplete(currTaskId);
                     }
                     if (data["formID"] === "221914243957359") {
-                        var completedTasks = widget.getApprovedTasks();
-                        for (let i = 0; i < completedTasks.length; i++) {
-                            widget.markRefAsComplete(completedTasks[i])
-                        }
+                        // var completedTasks = widget.getApprovedTasks();
+                        // for (let i = 0; i < completedTasks.length; i++) {
+                        //     widget.markRefAsComplete(completedTasks[i])
+                        // }
                     }
 
                     // send the data
