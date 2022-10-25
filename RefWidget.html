@@ -19,7 +19,7 @@
 <body>
     <script type="text/javascript">
         var currTaskId;
-        var alreadyRan = false;
+        var updateOriginalSubmissionAlreadyRan = false;
 
         var appCheckStatusAlreadyRan = false
         var nmcCheckStatusAlreadyRan = false
@@ -63,9 +63,9 @@
                         originalSubmissionId = res.data[0].value;
                     });
 
-                    if (formData.value !== undefined) {
-                        alreadyRan = formData.value
-                    }
+                    // if (formData.value !== undefined) {
+                    //     alreadyRan = formData.value
+                    // }
 
                     //Check if form data is equal to form IDs
                     checkFormId(currFormID);
@@ -476,12 +476,13 @@
                 }
 
                 JFCustomWidget.subscribe('submit', function () {
-                    console.log("Call already ran? ", alreadyRan)
+                    console.log("Call already ran? ", updateOriginalSubmissionAlreadyRan)
                     widgetParams = JFCustomWidget.getWidgetSettings()
-                    if (alreadyRan !== true) {
+                    if (updateOriginalSubmissionAlreadyRan !== true) {
                         widget.updateOriginalSubmission(widgetParams["apiKey"]);
+                        updateOriginalSubmissionAlreadyRan = true;
                     }
-                    if (currTaskId !== undefined && currTaskId !== "" && alreadyRan !== true) {
+                    if (currTaskId !== undefined && currTaskId !== "") {
                         widget.markRefAsComplete(currTaskId);
                     }
                     if (data["formID"] === "221914243957359") {
