@@ -481,7 +481,6 @@
                     console.log("Call already ran? ", alreadyRan)
                     if (currTaskId !== undefined && currTaskId !== "" && alreadyRan !== true) {
                         widget.markRefAsComplete(currTaskId);
-                        JFCustomWidget.sendSubmit({ value: true, valid: true })
                     }
                     if (data["formID"] === "221914243957359") {
                         // var completedTasks = widget.getApprovedTasks();
@@ -491,6 +490,7 @@
                     }
 
                     // send the data
+                    JFCustomWidget.sendSubmit({ value: true, valid: true })
                     // JFCustomWidget.sendSubmit({value: "Control form updated", valid:true});
                 });
             });
