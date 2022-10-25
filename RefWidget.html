@@ -476,9 +476,11 @@
                 }
 
                 JFCustomWidget.subscribe('submit', function () {
-                    widgetParams = JFCustomWidget.getWidgetSettings()
-                    widget.updateOriginalSubmission(widgetParams["apiKey"]);
                     console.log("Call already ran? ", alreadyRan)
+                    widgetParams = JFCustomWidget.getWidgetSettings()
+                    if (alreadyRan !== true) {
+                        widget.updateOriginalSubmission(widgetParams["apiKey"]);
+                    }
                     if (currTaskId !== undefined && currTaskId !== "" && alreadyRan !== true) {
                         widget.markRefAsComplete(currTaskId);
                     }
