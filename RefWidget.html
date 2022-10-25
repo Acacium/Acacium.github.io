@@ -19,6 +19,7 @@
 <body>
     <script type="text/javascript">
         var currTaskId;
+        var alreadyRan = false;
 
         var appCheckStatusAlreadyRan = false
         var nmcCheckStatusAlreadyRan = false
@@ -122,6 +123,7 @@
                         // timeout: 10000,
                         success: function (responseData, textStatus, jqXHR) {
                             console.log(responseData);
+                            alreadyRan = true;
                         },
                         error: function (responseData, textStatus, jqXHR) {
                             console.log(responseData);
@@ -473,7 +475,8 @@
                 JFCustomWidget.subscribe('submit', function () {
                     widgetParams = JFCustomWidget.getWidgetSettings()
                     widget.updateOriginalSubmission(widgetParams["apiKey"]);
-                    if (currTaskId !== undefined && currTaskId !== "") {
+                    console.log("Call already ran? ",alreadyRan)
+                    if (currTaskId !== undefined && currTaskId !== "" && alreadyRan !== true) {
                         widget.markRefAsComplete(currTaskId);
                     }
                     if (data["formID"] === "221914243957359") {
