@@ -447,7 +447,6 @@
                 // $('#listContainer').css('overflow-x', 'auto');
 
                 function init() {
-                    makeWidgetRequiredOrNot();
 
                     // $('#' + containerId).attr('data-widget-name', 'e7ce64589c330d6bb7bf8c25').html(buildHTML);
                     console.log("form Data = ", formData)
@@ -475,6 +474,9 @@
                             var currYear = new Date().getFullYear();
 
                             maxLimit = Math.abs(currYear - schoolLeavingAge);
+
+                            makeWidgetRequiredOrNot();
+
                         });
                     }
                     // Create a condition that targets viewports at least 800px wide
