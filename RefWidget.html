@@ -123,7 +123,6 @@
                         // timeout: 10000,
                         success: function (responseData, textStatus, jqXHR) {
                             console.log(responseData);
-                            alreadyRan = true;
                         },
                         error: function (responseData, textStatus, jqXHR) {
                             console.log(responseData);
@@ -478,6 +477,7 @@
                     console.log("Call already ran? ",alreadyRan)
                     if (currTaskId !== undefined && currTaskId !== "" && alreadyRan !== true) {
                         widget.markRefAsComplete(currTaskId);
+                        alreadyRan = true;
                     }
                     if (data["formID"] === "221914243957359") {
                         // var completedTasks = widget.getApprovedTasks();
