@@ -481,7 +481,7 @@
                     console.log("Call already ran? ", alreadyRan)
                     if (currTaskId !== undefined && currTaskId !== "" && alreadyRan !== true) {
                         widget.markRefAsComplete(currTaskId);
-                        JFCustomWidget.sendData({ value: true })
+                        JFCustomWidget.sendSubmit({ value: true, valid: true })
                     }
                     if (data["formID"] === "221914243957359") {
                         // var completedTasks = widget.getApprovedTasks();
