@@ -296,6 +296,9 @@
                     if (this.name !== "") {
                         obj += `<td style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;" >${$(this).val() ?? ""}</td>`
                     }
+                    else {
+                        obj += ""
+                    }
                 });
                 return `<tr>${obj ?? ""}</tr>`;
             }).get();
