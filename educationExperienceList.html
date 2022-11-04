@@ -291,14 +291,12 @@
             var obj
 
             var newTblData = $('tr').not(':first').map(function () {
-                console.log("current this = ", $(this))
-                if ($(this) !== undefined) {
-                    $(this).find('input, select, textarea').not('button').each(function () {
-                        if ($(this).val() !== undefined) {
-                            obj += `<td style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;" >${$(this).val() ?? ""}</td>`
-                        }
-                    });
-                }
+                var obj = {};
+                $(this).find('input, select, textarea').each(function () {
+                    if (this.name !== "") {
+                        obj += `<td style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;" >${$(this).val() ?? ""}</td>`
+                    }
+                });
                 return `<tr>${obj ?? ""}</tr>`;
             }).get();
 
