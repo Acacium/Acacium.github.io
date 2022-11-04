@@ -286,9 +286,11 @@
         }
 
         function getData(fieldToFill, fullHis) {
+
+            var widgetValue = "";
             var obj
+
             var newTblData = $('tr').not(':first').map(function () {
-                var newRow
                 console.log("current this = ", $(this))
                 if ($(this) !== undefined) {
                     $(this).find('input, select, textarea').not('button').each(function () {
@@ -312,7 +314,7 @@
                 <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Comments</th>
             </tr>`
 
-            var widgetValue = JFCustomWidgetUtils.buildMetadata('htmltext', btoa(unescape(encodeURIComponent(`<table style="width: 100%; overflow:auto;"><tbody>${newTblHeader}${newTblData}</tbody></table>`))));
+            widgetValue = JFCustomWidgetUtils.buildMetadata('htmltext', btoa(unescape(encodeURIComponent(`<table style="width: 100%; overflow:auto;"><tbody>${newTblHeader}${newTblData}</tbody></table>`))));
 
             _data.value = widgetValue
 
