@@ -319,6 +319,11 @@
 
             _data.value = widgetValue
 
+            JFCustomWidget.setFieldsValueById([{
+                id: fieldToFill,
+                value: JSON.stringify(widgetValue)
+            }]);
+
             return _data
         }
 
