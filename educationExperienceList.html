@@ -288,7 +288,7 @@
         function getData(fieldToFill, fullHis) {
 
             var widgetValue = "";
-            var obj
+            var obj;
 
             var newTblData = $('tr').not(':first').map(function () {
                 var obj = {};
@@ -636,7 +636,40 @@
                         makeWidgetRequiredOrNot();
 
                     } catch (error) {
+
                         console.log(error)
+                        console.log("widget value = ", dataObj.widget_metadata.value)
+                        var newWidgetValue1 = decodeURIComponent(escape(atob(dataObj.widget_metadata.value)));
+                        // console.log("test01 = ", JSON.parse(JSON.stringify($.parseHTML(newWidgetValue1))))
+
+                        var newTbl = $(newWidgetValue1).find('tr:has(td)').map(function (i, v) {
+                            var $td = $('td', this);
+                            return {
+                                "Type of Activity": $td.eq(0).text(),
+                                "Name of Employer": $td.eq(1).text(),
+                                "Institution": $td.eq(2).text(),
+                                "Start Date": $td.eq(3).text(),
+                                "End Date": $td.eq(4).text(),
+                                "Position Held": $td.eq(5).text(),
+                                "Grade/Band": $td.eq(6).text(),
+                                "Results": $td.eq(7).text(),
+                                "Comments": $td.eq(9).text()
+                            }
+                        }).get();
+
+
+                        console.log("NEW VALUES: ", newTbl)
+
+                        newTbl.forEach(function (tblInfo) {
+                            if (Object.keys(tblInfo).length !== 0) {
+                                console.log(tblInfo)
+                                addRow(true, tblInfo)
+                            }
+                        })
+
+                        // var newTblData1 = $.parseHTML(newWidgetValue1).tableToJSON();
+                        // console.log("new date for table = ", newTblData1)
+
                         return
                     }
                 }
