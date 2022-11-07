@@ -643,6 +643,8 @@
                     } catch (error) {
 
                         console.log(error)
+                        console.log("DATA OBJECT: ", dataObj)
+
                         console.log("widget value = ", dataObj.widget_metadata.value)
                         var newWidgetValue1 = decodeURIComponent(escape(atob(dataObj.widget_metadata.value)));
                         // console.log("test01 = ", JSON.parse(JSON.stringify($.parseHTML(newWidgetValue1))))
