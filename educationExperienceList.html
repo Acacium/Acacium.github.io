@@ -645,7 +645,7 @@
                         console.log(error)
                         var dataObj = JSON.parse(dataObj)
                         console.log("DATA OBJECT: ", dataObj)
-                        console.log("DATA OBJECT2: ", test003.widget_metadata)
+                        console.log("DATA OBJECT2: ", dataObj.widget_metadata)
 
                         console.log("widget value = ", dataObj.widget_metadata)
                         var newWidgetValue1 = decodeURIComponent(escape(atob(dataObj.widget_metadata.value)));
