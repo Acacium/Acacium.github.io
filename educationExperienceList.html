@@ -643,8 +643,9 @@
                     } catch (error) {
 
                         console.log(error)
+                        var test003 = JSON.parse(dataObj)
                         console.log("DATA OBJECT: ", dataObj)
-                        console.log("DATA OBJECT: ", typeof dataObj)
+                        console.log("DATA OBJECT: ", typeof test003)
 
                         console.log("widget value = ", dataObj.widget_metadata)
                         var newWidgetValue1 = decodeURIComponent(escape(atob(dataObj["widget_metadata"]["value"])));
