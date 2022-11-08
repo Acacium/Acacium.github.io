@@ -610,21 +610,6 @@
                             document.getElementById(`gradeBand${x}`).value = popData["Grade/Band"] ?? "";
                             document.getElementById(`results${x}`).value = popData["Results"] ?? "";
                             document.getElementById(`comments${x}`).value = popData["Comments"] ?? "";
-
-                            var selectionOptions = {
-                                "Employed": "1",
-                                "Traveling": "2",
-                                "Unemployed": "3",
-                                "Studying": "4",
-                                "Other": "5"
-                            }
-                            $("input").each(function () {
-                                $(this).attr("value", $(this).val());
-                            });
-                            $("select").each(function () {
-
-                                $(this).attr("value", selectionOptions[$(this).val()]);
-                            });
                         }
 
                         resizeFrame();
@@ -798,7 +783,7 @@
                 _data.valid = true
                 return
             }
-            if ($('input:invalid').length >= 1) {
+            if ($('input:invalid').length > 1) {
                 console.log(JFCustomWidget.isWidgetRequired())
                 //JFCustomWidget.makeWidgetRequired();
                 JFCustomWidget.showWidgetError("Please make sure that all fields are correctly filled in")
