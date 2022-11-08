@@ -409,6 +409,7 @@
                 var row = table.deleteRow(id);
                 resizeFrame();
                 validateDates();
+                makeWidgetRequiredOrNot()
                 return
                 //rowCount--;
             }
@@ -425,6 +426,7 @@
             console.log($(tblRow).prev()[0])
             $(tblRow).prev().before($(tblRow));
             validateDates();
+            makeWidgetRequiredOrNot()
             return
         }
 
@@ -436,6 +438,7 @@
             }
             $(tblRow).next().after($(tblRow));
             validateDates();
+            makeWidgetRequiredOrNot()
             return;
         }
 
