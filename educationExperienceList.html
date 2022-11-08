@@ -609,7 +609,22 @@
                             document.getElementById(`positionHeld${x}`).value = popData["Position Held"] ?? "";
                             document.getElementById(`gradeBand${x}`).value = popData["Grade/Band"] ?? "";
                             document.getElementById(`results${x}`).value = popData["Results"] ?? "";
-                            document.getElementById(`comments${x}`).value = popData["Comments"] ?? ""
+                            document.getElementById(`comments${x}`).value = popData["Comments"] ?? "";
+
+                            var selectionOptions = {
+                                "Employed": "1",
+                                "Traveling": "2",
+                                "Unemployed": "3",
+                                "Studying": "4",
+                                "Other": "5"
+                            }
+                            $("input").each(function () {
+                                $(this).attr("value", $(this).val());
+                            });
+                            $("select").each(function () {
+
+                                $(this).attr("value", selectionOptions[$(this).val()]);
+                            });
                         }
 
                         resizeFrame();
