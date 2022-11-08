@@ -7,6 +7,7 @@
     <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/table-to-json/1.0.0/jquery.tabletojson.min.js"></script>
     <script type="text/javascript">
         (function () {
             var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
@@ -291,14 +292,9 @@
             var obj;
 
             var newTblData = $('tr').not(':first').map(function () {
-                var obj = {};
+                var obj = "";
                 $(this).find('input, select, textarea').each(function () {
-                    if ($(this).val() !== undefined) {
-                        obj += `<td style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;" >${$(this).val() ?? ""}</td>`
-                    }
-                    else {
-                        obj += ""
-                    }
+                    obj += `<td style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;" >${$(this).val() ?? ""}</td>`
                 });
                 return `<tr>${obj ?? ""}</tr>`;
             }).get();
@@ -315,9 +311,9 @@
                 <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Comments</th>
             </tr>`
 
-            widgetValue = JFCustomWidgetUtils.buildMetadata('htmltext', btoa(unescape(encodeURIComponent(`<table style="width: 100%; overflow:auto;"><tbody>${newTblHeader}${newTblData}</tbody></table>`))));
+            var widgetValue = JFCustomWidgetUtils.buildMetadata('htmltext', btoa(unescape(encodeURIComponent(`<table style="width: 100%; overflow: auto; max-width: 500px;"><tbody>${newTblHeader}${newTblData}</tbody></table>`))));
 
-            _data.value = widgetValue
+            _data.value = widgetValue;
 
             JFCustomWidget.setFieldsValueById([{
                 id: fieldToFill,
@@ -364,7 +360,7 @@
                         JFCustomWidget.setFieldsValueById(dateDiffRes);
                         console.log("here")
                         numOfIncorrectDates = numOfIncorrectDates + 1
-                        _data.valid = false
+                        // _data.valid = false
                         return false
                         //return { value: "Yes", valid: false };
                     }
@@ -375,7 +371,7 @@
                         console.log("Valid dates = ", dateDiffRes)
                         JFCustomWidget.setFieldsValueById(dateDiffRes);
                         numOfIncorrectDates = numOfIncorrectDates - 1;
-                        _data.valid = true
+                        // _data.valid = true
                         return true
                     }
                     //add coomments to array
@@ -526,6 +522,11 @@
                         makeWidgetRequiredOrNot();
                     });
 
+                    $(document).ready(function () {
+                        console.log("ready!");
+                        makeWidgetRequiredOrNot();
+                    });
+
                     $('input, select, textarea').on('change', JFCustomWidget.sendData(getData(fieldToStoreData)));
 
                     $("input[type=date]").attr("min", currMaxYear);
@@ -549,12 +550,12 @@
                 function addRow(isPop, popData) {
                     if ($('input:invalid').length >= 1) {
                         JFCustomWidget.showWidgetError("Please make sure that all fields are correctly filled in");
-                        JFCustomWidget.sendSubmit({ valid: false });
+                        // JFCustomWidget.sendSubmit({ valid: false });
                         return
                     }
                     else {
                         JFCustomWidget.hideWidgetError();
-                        JFCustomWidget.sendSubmit({ valid: true });
+                        // JFCustomWidget.sendSubmit({ valid: true });
 
                         var table = document.getElementById("emptbl");
                         // GET TOTAL NUMBER OF ROWS 
@@ -645,8 +646,8 @@
                         console.log(error)
                         var dataObj = JSON.parse(dataObj)
                         console.log("DATA OBJECT: ", dataObj)
-                        console.log("DATA OBJECT2: ", dataObj.widget_metadata)
-                        console.log("DATA OBJECT3: ", dataObj.widget_metadata.value)
+                        console.log("DATA OBJECT2: ", dataObj?.widget_metadata)
+                        console.log("DATA OBJECT3: ", dataObj?.widget_metadata?.value)
                         var newWidgetValue1 = decodeURIComponent(escape(atob(dataObj.widget_metadata.value)));
                         // console.log("test01 = ", JSON.parse(JSON.stringify($.parseHTML(newWidgetValue1))))
 
@@ -738,11 +739,13 @@
                     if (widgetParm["fullWorkHistory"] === "No") {
                         widget.setCompanyNames([widgetParm["companyField1"], widgetParm["companyField2"], widgetParm["companyField3"], widgetParm["companyField4"], widgetParm["companyField5"], widgetParm["companyField6"]]);
                         makeWidgetRequiredOrNot()
-                        JFCustomWidget.sendSubmit(getData(widgetParm["storageField"]));
+                        getData(widgetParm["storageField"])
+                        JFCustomWidget.sendSubmit({ valid: true, value: _data.valid ? "" : _data.value });
                     }
                     else if (widgetParm["fullWorkHistory"] === "Yes") {
                         makeWidgetRequiredOrNot()
-                        JFCustomWidget.sendSubmit(getData(widgetParm["storageField"]));
+                        getData(widgetParm["storageField"])
+                        JFCustomWidget.sendSubmit({ valid: true, value: _data.valid ? "" : _data.value });
                     }
 
                     console.log(widgetParm["storageField"]);
@@ -756,26 +759,36 @@
 
 
         function makeWidgetRequiredOrNot() {
-            console.log("here")
+            var currTable = document.getElementById('emptbl');
+            var currRowCount = currTable.rows.length;
+            console.log("CURRENT ROW COUNT: ", currRowCount)
             //Validate years since school leaving age
 
             console.log($('input:invalid').length)
 
+            if (currRowCount <= 1) {
+                // console.log(JFCustomWidget)
+                // console.log(JFCustomWidget.isWidgetRequired())
+                // JFCustomWidget.makeWidgetRequired();
+                JFCustomWidget.showWidgetError("Please click the Add Row button to complete this section")
+                _data.valid = true
+                return
+            }
             if ($('input:invalid').length >= 1) {
                 console.log(JFCustomWidget.isWidgetRequired())
                 //JFCustomWidget.makeWidgetRequired();
                 JFCustomWidget.showWidgetError("Please make sure that all fields are correctly filled in")
-                _data.valid = false
+                _data.valid = true
                 return
             }
             if (validateWidget() === false) {
-                _data.valid = false
+                _data.valid = true
                 //JFCustomWidget.makeWidgetRequired();
                 //JFCustomWidget.showWidgetError("Please make sure that all fields are correctly filled in")
                 return
             }
             if (validateDates() === false) {
-                _data.valid = false
+                _data.valid = true
                 // JFCustomWidget.makeWidgetRequired();
                 JFCustomWidget.showWidgetError("The date(s) above highlighted in red have a gap greater then 1 month, please mention why in the field below")
                 return
@@ -783,7 +796,7 @@
             else {
                 JFCustomWidget.makeWidgetNotRequired();
                 JFCustomWidget.hideWidgetError();
-                _data.valid = true
+                _data.valid = false
                 return
             }
         }
@@ -821,12 +834,12 @@
 
             if (totalYears < maxLimit) {
                 JFCustomWidget.showWidgetError("Please make sure you've listed all posts held in the last " + maxLimit + " years")
-                JFCustomWidget.sendSubmit({ valid: false });
+                // JFCustomWidget.sendSubmit({ valid: false });
                 return false
             }
             else {
                 JFCustomWidget.hideWidgetError();
-                JFCustomWidget.sendSubmit({ valid: true });
+                // JFCustomWidget.sendSubmit({ valid: true });
                 return true
             }
         }
