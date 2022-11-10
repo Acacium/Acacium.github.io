@@ -148,15 +148,15 @@
             }
 
             td:nth-of-type(2):before {
-                content: "Select a type of activity";
+                content: "Name of Hospital/Employer";
             }
 
             td:nth-of-type(3):before {
-                content: "Company";
+                content: "Position Held";
             }
 
             td:nth-of-type(4):before {
-                content: "Institution";
+                content: "Company";
             }
 
             td:nth-of-type(5):before {
@@ -168,22 +168,6 @@
             }
 
             td:nth-of-type(7):before {
-                content: "Position Held";
-            }
-
-            td:nth-of-type(8):before {
-                content: "Grade Band";
-            }
-
-            td:nth-of-type(9):before {
-                content: "Results";
-            }
-
-            td:nth-of-type(10):before {
-                content: "Comments";
-            }
-
-            td:nth-of-type(11):before {
                 content: " ";
             }
         }
@@ -288,31 +272,21 @@
 
         function getData(fieldToFill) {
             var widgetValue = "";
-            var obj
+            var obj1;
 
             var newTblData = $('tr').not(':first').map(function () {
-                var obj = {};
+                obj1 = "";
                 $(this).find('input, select, textarea').each(function () {
-                    if ($(this).val() !== undefined) {
-                        obj += `<td style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;" >${$(this).val() ?? ""}</td>`
-                    }
-                    else {
-                        obj += ""
-                    }
+                    obj1 += `<td style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;" >${$(this).val() ?? ""}</td>`
                 });
-                return `<tr>${obj ?? ""}</tr>`;
+                return `<tr>${obj1 ?? ""}</tr>`;
             }).get();
 
             var newTblHeader = `<tr id="tblHeading"">
-                <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Type of activity</th>
-                <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Company</th>
-                <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Institution</th>
+                <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Name of Hospital/Employer</th>
+                <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Position Held</th>
                 <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Start Date</th>
                 <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">End Date</th>
-                <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Position Held</th>
-                <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Grade/Band</th>
-                <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Results</th>
-                <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Comments</th>
             </tr>`
 
             widgetValue = JFCustomWidgetUtils.buildMetadata('htmltext', btoa(unescape(encodeURIComponent(`<table style="width: 100%; overflow:auto;"><tbody>${newTblHeader}${newTblData}</tbody></table>`))));
@@ -533,7 +507,7 @@
                 function addRow(isPop, popData) {
                     if ($('input:invalid').length >= 1) {
                         JFCustomWidget.showWidgetError("Please make sure that all fields are correctly filled in");
-                        JFCustomWidget.sendSubmit({ valid: false });
+                        // JFCustomWidget.sendSubmit({ valid: false });
                         return
                     }
                     else {
@@ -583,9 +557,43 @@
                                 addRow(true, obj)
                             }
                         })
-
+                        makeWidgetRequiredOrNot();
                     } catch (error) {
+                        try {
+                            if (typeof dataObj === "string") {
+                                var dataObj = JSON.parse(dataObj)
+                            }
+                        } catch (error2) { //due to dataObj being stored in a field
+                            console.log(error2)
+                        }
                         console.log(error)
+                        // var dataObj = JSON.parse(dataObj)
+                        console.log("DATA OBJECT: ", dataObj)
+                        console.log("DATA OBJECT2: ", dataObj?.widget_metadata)
+                        console.log("DATA OBJECT3: ", dataObj?.widget_metadata?.value)
+                        var newWidgetValue1 = decodeURIComponent(escape(atob(dataObj.widget_metadata.value)));
+                        // console.log("test01 = ", JSON.parse(JSON.stringify($.parseHTML(newWidgetValue1))))
+
+                        var newTbl = $(newWidgetValue1).find('tr:has(td)').map(function (i, v) {
+                            var $td = $('td', this);
+                            return {
+                                "Name of Employer": $td.eq(0).text(),
+                                "Position Held": $td.eq(1).text(),
+                                "Start Date": $td.eq(2).text(),
+                                "End Date": $td.eq(3).text(),
+                            }
+                        }).get();
+
+
+                        console.log("NEW VALUES: ", newTbl)
+
+                        newTbl.forEach(function (tblInfo) {
+                            if (Object.keys(tblInfo).length !== 0) {
+                                console.log(tblInfo)
+                                addRow(true, tblInfo)
+                            }
+                        })
+                        makeWidgetRequiredOrNot();
                         return
                     }
                 }
@@ -628,7 +636,7 @@
                     if (widgetParm["fullWorkHistory"] === "Yes") {
                         // widget.setCompanyNames([widgetParm["companyField1"], widgetParm["companyField2"], widgetParm["companyField3"], widgetParm["companyField4"], widgetParm["companyField5"], widgetParm["companyField6"]]);
                         makeWidgetRequiredOrNot()
-                        JFCustomWidget.sendSubmit(getData(widgetParm["storageField"]));
+                        JFCustomWidget.sendSubmit({ valid: true, value: _data.valid ? "" : _data.value });
                     }
                     // else if (widgetParm["fullWorkHistory"] === "Yes") {
                     //     makeWidgetRequiredOrNot()
@@ -732,11 +740,11 @@
                 console.log(JFCustomWidget.isWidgetRequired())
                 //JFCustomWidget.makeWidgetRequired();
                 JFCustomWidget.showWidgetError("Please make sure that all fields are correctly filled in")
-                _data.valid = false
+                _data.valid = true
                 return
             }
             if (validateWidget() === false) {
-                _data.valid = false
+                _data.valid = true
                 //JFCustomWidget.makeWidgetRequired();
                 //JFCustomWidget.showWidgetError("Please make sure that all fields are correctly filled in")
                 return
@@ -750,7 +758,7 @@
             else {
                 JFCustomWidget.makeWidgetNotRequired();
                 JFCustomWidget.hideWidgetError();
-                _data.valid = true
+                _data.valid = false
                 return
             }
         }
@@ -788,12 +796,12 @@
 
             if (totalYears < maxLimit) {
                 JFCustomWidget.showWidgetError("Please make sure you've listed all posts held in the last " + maxLimit + " years")
-                JFCustomWidget.sendSubmit({ valid: false });
+                // JFCustomWidget.sendSubmit({ valid: false });
                 return false
             }
             else {
                 JFCustomWidget.hideWidgetError();
-                JFCustomWidget.sendSubmit({ valid: true });
+                // JFCustomWidget.sendSubmit({ valid: true });
                 return true
             }
         }
