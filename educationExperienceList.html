@@ -629,7 +629,13 @@ table tr:last-child, tr:first-child {
                 var currRowCount = currTable.rows.length;
                 console.log("CURRENT ROW COUNT: ", currRowCount)
                 //Validate years since school leaving age
-    
+                try {
+                    var required1 = $('input,textarea,option:selected').filter('[required]:enabled');
+                    console.log(required1)
+                } catch (error) {
+                    
+                }
+                
                 console.log($('input:invalid').length)
     
                 if (currRowCount <= 1) {
