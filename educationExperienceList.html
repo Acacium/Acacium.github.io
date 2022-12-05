@@ -453,7 +453,7 @@ table tr:last-child, tr:first-child {
                             positionHeldCell.innerHTML = `<div class="form-group"><label for="positionHeld${x}" class="form-label">Position Held</label><input class="form-control" type="text" name="Position Held" value="" id="positionHeld${x}" required /></div>`;
                             gradeBandCell.innerHTML = `<div class="form-group"><label for="gradeBand${x}" class="form-label">Grade/Band</label><input class="form-control" type="text" name="Grade/Band" value="" id="gradeBand${x}" required /></div>`;
                             resultsCell.innerHTML = `<div class="form-group"><label for="results${x}" class="form-label">Results</label><input class="form-control" type="text" name="Results" value="" id="results${x}" required /></div>`;
-                            commentsCell.innerHTML = `<div class="form-group"><label for="comments${x}" class="form-label">Comments</label><textarea class="form-control" type="text" name="Comments" value="" id="comments${x}" required></textarea></div>`;
+                            commentsCell.innerHTML = `<div class="form-group"><label for="comments${x}" class="form-label">Comments</label><textarea class="form-control" type="text" name="Comments" value="" id="comments${x}"></textarea></div>`;
                             buttonsCell.innerHTML = `<div class="btn-group-vertical"><button type="button" id="upRow${x}" onclick="moveRowUp(${id})">↑</button> <button class="bi bi-trash" type="button" id="deleteRow${x}" onclick="deleteRow(${x})"></button> <button type="button" id="downRow${x}" onclick="moveRowDown(${id})">↓</button></div>`;    
                             //set values
                             if (isPop) {
