@@ -19,7 +19,7 @@
 <body>
     <script type="text/javascript">
         var currTaskId;
-        var updateOriginalSubmissionAlreadyRan = "false";
+        // var updateOriginalSubmissionAlreadyRan = "false";
 
         var appCheckStatusAlreadyRan = false
         var nmcCheckStatusAlreadyRan = false
@@ -64,32 +64,32 @@
                     });
 
                     console.log("form value = ", formData.value)
-                    if (formData.value !== undefined) {
-                        updateOriginalSubmissionAlreadyRan = formData.value
-                    }
+                    // if (formData.value !== undefined) {
+                    //     updateOriginalSubmissionAlreadyRan = formData.value
+                    // }
 
                     //Check if form data is equal to form IDs
                     checkFormId(currFormID);
                 }
 
                 function updateOriginalSubmission(apiKey) {
-                    console.log(`https://acaciumgroup.jotform.com/API/sheets/221914243957359/submission/${originalSubmissionId}?sheets=1&replace=1&apiKey=${apiKey}`)
+                    // console.log(`https://acaciumgroup.jotform.com/API/sheets/221914243957359/submission/${originalSubmissionId}?sheets=1&replace=1&apiKey=${apiKey}`)
                     jQuery.ajax({
                         url: `https://acaciumgroup.jotform.com/API/sheets/221914243957359/submission/${originalSubmissionId}?sheets=1&replace=1&apiKey=${apiKey}`,
                         method: "POST",
                         data: controlFieldsToUpdate,
                         // timeout: 10000,
                         success: function (responseData, textStatus, jqXHR) {
-                            console.log(responseData);
+                            // console.log(responseData);
                         },
                         error: function (responseData, textStatus, jqXHR) {
-                            console.log(responseData);
+                            // console.log(responseData);
                         }
                     })
                 }
 
                 function getTaskId(approvalName) {
-                    console.log(`https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={'status:ne':['COMPLETED','CANCELED'],'onlyAssignee':'1'}`)
+                    // console.log(`https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={'status:ne':['COMPLETED','CANCELED'],'onlyAssignee':'1'}`)
                     jQuery.ajax({
                         url: `https://acaciumgroup.jotform.com/API/workflow/submission/${originalSubmissionId}/tasks?limit=50&filter={'status:ne':['COMPLETED','CANCELED'],'onlyAssignee':'1'}`,
                         method: "GET",
@@ -100,37 +100,37 @@
                         // timeout: 10000,
                         success: function (responseData, textStatus, jqXHR) {
                             var currTaskList = responseData?.content[0]?.taskList;
-                            console.log(currTaskList)
+                            // console.log(currTaskList)
 
                             for (let i = 0; i < currTaskList?.length; i++) {
                                 //   // const element = array[index];
                                 if (currTaskList[i]?.properties?.taskName === approvalName) {
                                     currTaskId = currTaskList[i]?.id;
-                                    console.log(currTaskId);
+                                    // console.log(currTaskId);
                                     return currTaskId
                                 }
                             }
                             return
                         },
                         error: function (responseData, textStatus, jqXHR) {
-                            console.log(responseData);
+                            // console.log(responseData);
                             return
                         }
                     })
                 }
 
                 function markRefAsComplete(taskID) {
-                    console.log(`https://acaciumgroup.jotform.com/API/workflow/task/${taskID}/complete?apiKey=${params["apiKey"]}`)
+                    // console.log(`https://acaciumgroup.jotform.com/API/workflow/task/${taskID}/complete?apiKey=${params["apiKey"]}`)
                     jQuery.ajax({
                         url: `https://acaciumgroup.jotform.com/API/workflow/task/${taskID}/complete?apiKey=${params["apiKey"]}`,
                         method: "POST",
                         data: JSON.stringify({ "outcomeID": 1, "comment": "" }),
                         // timeout: 10000,
                         success: function (responseData, textStatus, jqXHR) {
-                            console.log(responseData);
+                            // console.log(responseData);
                         },
                         error: function (responseData, textStatus, jqXHR) {
-                            console.log(responseData);
+                            // console.log(responseData);
                             return
                         }
                     })
@@ -477,12 +477,12 @@
                 }
 
                 JFCustomWidget.subscribe('submit', function () {
-                    console.log("Call already ran? ", updateOriginalSubmissionAlreadyRan)
+                    // console.log("Call already ran? ", updateOriginalSubmissionAlreadyRan)
                     widgetParams = JFCustomWidget.getWidgetSettings()
-                    if (updateOriginalSubmissionAlreadyRan !== "true") {
+                    //if (updateOriginalSubmissionAlreadyRan !== "true") {
                         widget.updateOriginalSubmission(widgetParams["apiKey"]);
                         // updateOriginalSubmissionAlreadyRan = true;
-                    }
+                    //}
                     if (currTaskId !== undefined && currTaskId !== "") {
                         widget.markRefAsComplete(currTaskId);
                     }
