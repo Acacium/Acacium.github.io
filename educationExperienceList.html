@@ -30,22 +30,23 @@
         <style>
             .form-control input, label {display: block;}
 
-.form-control {height: 40px; width: 150px;}
+            .form-control {height: 40px; width: 150px;}
 
-.btn-group-vertical {position:relative; left:10px; top:2px;}
+            .btn-group-vertical {position:relative; left:10px; top:2px;}
 
-table {border: 0; max-width: 600px;}
+            table {border: 0; max-width: 600px;}
 
-table td {font-size: .8em; text-align: left; display: inline-block;}
+            table td {font-size: .8em; text-align: left; display: inline-block;}
 
-table tr {
-    border-bottom: 1px solid black;
-}​
+            table tr {
+                border-bottom: 1px solid black;
+            }​
 
-table tr:last-child, tr:first-child { 
-    border-bottom: none; 
-}
-#addRowButton {position:relative; top:10px;}
+            table tr:last-child, tr:first-child { 
+                border-bottom: none; 
+            }
+            
+            #addRowButton {position:relative; top:10px;}
         </style>
         <script type="text/javascript">
     
@@ -157,7 +158,7 @@ table tr:last-child, tr:first-child {
                     return `<tr>${obj ?? ""}</tr>`;
                 }).get();
     
-                var newTblHeader = `<tr id="tblHeading"">
+                var newTblHeader = `<tr id="tblHeading">
                     <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Type of activity</th>
                     <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Company</th>
                     <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Institution</th>
@@ -169,7 +170,7 @@ table tr:last-child, tr:first-child {
                     <th style="border: 1px solid #dddddd; border-collapse: collapse; padding: 8px; text-align: left;">Comments</th>
                 </tr>`
     
-                var widgetValue = JFCustomWidgetUtils.buildMetadata('htmltext', btoa(unescape(encodeURIComponent(`<table style="width: 100%; overflow: auto;"><tbody>${newTblHeader}${newTblData}</tbody></table>`))));
+                var widgetValue = JFCustomWidgetUtils.buildMetadata('htmltext', btoa(unescape(encodeURIComponent(`<table style="width: 100%; overflow: auto; table-layout: fixed;"><tbody>${newTblHeader}${newTblData}</tbody></table>`))));
     
                 _data.value = widgetValue;
     
@@ -528,7 +529,7 @@ table tr:last-child, tr:first-child {
                                     "Position Held": $td.eq(5).text(),
                                     "Grade/Band": $td.eq(6).text(),
                                     "Results": $td.eq(7).text(),
-                                    "Comments": $td.eq(9).text()
+                                    "Comments": $td.eq(8).text()
                                 }
                             }).get();
     
