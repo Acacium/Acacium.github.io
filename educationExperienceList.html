@@ -342,8 +342,8 @@
                                 restoreTableData(JSON.parse(formData.value))
                             } catch (error) {
                                 try {
-                                    var tempValue = decodeURI(formData.value);
-                                    console.log("DECODE: ", tempValue)
+                                    var tempValue = formData.value.replace(/&quot;/g, '\"');
+                                    console.log("DECODE: ", tempValue);
                                     restoreTableData(tempValue);
                                 } catch (error) {
                                     
