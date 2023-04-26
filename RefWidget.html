@@ -71,6 +71,9 @@
                     jQuery.ajax({
                         url: `https://acaciumgroup.jotform.com/API/sheets/221914243957359/submission/${originalSubmissionId}?sheets=1&replace=1&apiKey=${apiKey}`,
                         method: "POST",
+                        beforeSend: function (request) {
+                            request.setRequestHeader("jf-team-id", "223182511172042");
+                        },
                         data: controlFieldsToUpdate,
                         // timeout: 10000,
                         success: function (responseData, textStatus, jqXHR) {
@@ -474,8 +477,8 @@
                     // console.log("Call already ran? ", updateOriginalSubmissionAlreadyRan)
                     widgetParams = JFCustomWidget.getWidgetSettings()
                     //if (updateOriginalSubmissionAlreadyRan !== "true") {
-                        widget.updateOriginalSubmission(widgetParams["apiKey"]);
-                        // updateOriginalSubmissionAlreadyRan = true;
+                    widget.updateOriginalSubmission(widgetParams["apiKey"]);
+                    // updateOriginalSubmissionAlreadyRan = true;
                     //}
                     if (currTaskId !== undefined && currTaskId !== "") {
                         widget.markRefAsComplete(currTaskId);
@@ -488,7 +491,7 @@
                     }
 
                     // send the data
-                    JFCustomWidget.sendSubmit({value: "true", valid:true});
+                    JFCustomWidget.sendSubmit({ value: "true", valid: true });
                 });
             });
         })
