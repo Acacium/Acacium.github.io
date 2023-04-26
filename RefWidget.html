@@ -69,7 +69,7 @@
                 function updateOriginalSubmission(apiKey) {
                     // console.log(`https://acaciumgroup.jotform.com/API/sheets/221914243957359/submission/${originalSubmissionId}?sheets=1&replace=1&apiKey=${apiKey}`)
                     jQuery.ajax({
-                        url: `https://acaciumgroup.jotform.com/API/sheets/221914243957359/submission/${originalSubmissionId}?sheets=1&replace=1&apiKey=${apiKey}`,
+                        url: `https://acaciumgroup.jotform.com/API/submission/${originalSubmissionId}?apiKey=${apiKey}`,
                         method: "POST",
                         data: controlFieldsToUpdate,
                         // timeout: 10000,
