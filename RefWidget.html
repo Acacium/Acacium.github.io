@@ -71,7 +71,6 @@
                     jQuery.ajax({
                         url: `https://acaciumgroup.jotform.com/API/sheets/221914243957359/submission/${originalSubmissionId}?sheets=1&replace=1&apiKey=${apiKey}`,
                         method: "POST",
-                        dataType: "jsonp",
                         beforeSend: function (request) {
                             request.setRequestHeader("jf-team-id", "223182511172042");
                         },
