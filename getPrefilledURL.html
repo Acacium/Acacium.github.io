@@ -113,7 +113,7 @@
             console.log("CANDEMAIL: ", candEmail);
             var params2 = JFCustomWidget.getWidgetSettings();
             if (iqxNum === "" || candEmail === "") {
-                JFCustomWidget.getFieldsValueByName(["iqxReference", "email"], function (res) {
+                JFCustomWidget.getFieldsValueByName(["iqxReference", "candidateEmail"], function (res) {
                     console.log("HERE 1.1")
                     iqxNum = res.data[0].value;
                     candEmail = res.data[1].value;
@@ -225,7 +225,7 @@
             }
 
             JFCustomWidget.subscribe('submit', function () {
-                JFCustomWidget.getFieldsValueByName(["iqxReference", "email"], function (res) {
+                JFCustomWidget.getFieldsValueByName(["iqxReference", "candidateEmail"], function (res) {
                     console.log("HERE 2")
                     iqxNum = res.data[0].value;
                     candEmail = res.data[1].value;
