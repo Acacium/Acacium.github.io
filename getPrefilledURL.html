@@ -80,14 +80,15 @@
                     for (let i = 0; i < responseData.content.length; i++) {
                         if (responseData.content[i].actionDetails.to === candEmail) {
                             if (responseData.content[i].actionDetails.subject === params["emailSubject"]) {
-                                if (responseData.content[i].actionDetails.body !== undefined) {
-                                    console.log("FORM LINK: ", responseData.content[i].actionDetails.body)
-                                    var extractedLinkFromBody = responseData.content[i].actionDetails.body.match(/"https:(.*?)"/g);
-                                    const newString = String(extractedLinkFromBody).replace(/['"]+/g, '').replace(/&amp;/g, '&');
-                                    console.log("NEW URL: ", newString);
-                                    document.getElementById('canFormLink').value = newString;
-                                    clipText = newString;
-                                }
+                                console.log("FORM LINK1: ", responseData)
+                                console.log("FORM LINK2: ", responseData.content[i])
+                                console.log("FORM LINK3: ", responseData.content[i].actionDetails)
+                                console.log("FORM LINK4: ", responseData.content[i].actionDetails.body)
+                                var extractedLinkFromBody = responseData.content[i].actionDetails.body.match(/"https:(.*?)"/g);
+                                const newString = String(extractedLinkFromBody).replace(/['"]+/g, '').replace(/&amp;/g, '&');
+                                console.log("NEW URL: ", newString);
+                                document.getElementById('canFormLink').value = newString;
+                                clipText = newString;
                             }
                         }
                     }
@@ -251,7 +252,6 @@
             <button id="getLinkButton" class="btn btn-success" type="button" onclick="getLinkStageOne()">
                 <i id="myLoadIcon" class=""></i> Get Link</button>
         </div>
-        <!-- <label for="canFormLink">Get Link</label> -->
         <input type="text" id="canFormLink" name="canFormLink" class="form-control" placeholder="" aria-label=""
             aria-describedby="basic-addon1">
         <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">Copy</button>
