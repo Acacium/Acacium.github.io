@@ -80,6 +80,7 @@
                     for (let i = 0; i < responseData.content.length; i++) {
                         if (responseData.content[i].actionDetails.to === candEmail) {
                             if (responseData.content[i].actionDetails.subject === params["emailSubject"]) {
+                                console.log("PARAMS: ", params)
                                 console.log("FORM LINK1: ", responseData)
                                 console.log("FORM LINK2: ", responseData.content[i])
                                 console.log("FORM LINK3: ", responseData.content[i].actionDetails)
