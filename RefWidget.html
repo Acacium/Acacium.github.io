@@ -217,11 +217,11 @@
                                 }
                             });
                             break;
-                        case "222404538712047": //Test App remove later
-                            // fields = ["q5_nmcPin", "q6_doYou", "q7_whatIs", "q8_widgetStorage"];
-                            fields = ["5", "12", "7", "11"];
+                        case "232321739489060":
+                            //Dev Pulse App
+                            fields = ["91", "451", "302", "452"];
                             JFCustomWidget.getFieldsValueById(fields, function (res) {
-                                console.log("res value (Test form) = ", res.data)
+                                console.log("res value (Pulse App) = ", res.data)
                                 controlFieldsToUpdate = {
                                     "submission[78]": "Awaiting Review",
                                     "submission[14]": res.data[0].value,
@@ -231,15 +231,42 @@
                                 }
                             });
                             break;
-                        case "222514431776051": //Test Ref remove later
-                            fields = ["refereeName[first]", "refereeName[last]", "q6_refereeEmail", "startDate[day]", "startDate[month]", "startDate[year]",
-                                "endDate[day]", "endDate[month]", "endDate[year]"];
+                        case "232322209206040":
+                            //Dev TCS App
+                            fields = ["91", "452", "333", "453"];
+                            JFCustomWidget.getFieldsValueById(fields, function (res) {
+                                console.log("res value (TCS App) = ", res.data)
+                                controlFieldsToUpdate = {
+                                    "submission[78]": "Awaiting Review",
+                                    "submission[14]": res.data[0].value,
+                                    "submission[227]": res.data[1].value,
+                                    "submission[15]": res.data[2].value,
+                                    "submission[245]": res.data[3].value
+                                }
+                            });
+                            break;
+                        case "232321872888364":
+                            //Dev Pulse Ref
+                            fields = ["refereeName[first]", "refereeName[last]", "refereeEmail", "dateOf259[day]", "dateOf259[month]", "dateOf259[year]",
+                                "dateOf260[day]", "dateOf260[month]", "dateOf260[year]"];
+                            // fields = ["13", "16", "259", "260"];
                             JFCustomWidget.getFieldsValueByName(["refNumber"], function (res) {
                                 console.log("refNumber = ", res.data[0].value)
                                 refNumber = res.data[0].value;
                                 checkRefToUpdate(refNumber, fields);
                             });
-                            break
+                            break;
+                        case "232322190676353":
+                            //Dev TCS Ref
+                            fields = ["refereeName[first]", "refereeName[last]", "refereeEmail", "startDate282[day]", "startDate282[month]", "startDate282[year]",
+                                "endDate283[day]", "endDate283[month]", "endDate283[year]"];
+                            // fields = ["13", "16", "282", "283"];
+                            JFCustomWidget.getFieldsValueByName(["refNumber"], function (res) {
+                                console.log("refNumber = ", res.data[0].value)
+                                refNumber = res.data[0].value;
+                                checkRefToUpdate(refNumber, fields);
+                            });
+                            break;
                         default:
                             break;
                     }
