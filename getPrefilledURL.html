@@ -84,8 +84,8 @@
                                 console.log("FORM LINK1: ", responseData)
                                 console.log("FORM LINK2: ", responseData.content[i])
                                 console.log("FORM LINK3: ", responseData.content[i].actionDetails)
-                                console.log("FORM LINK4: ", responseData.content[i].actionDetails.body)
-                                if (params["emailSubject"] === "Your Application Form has been issued") {
+                                // console.log("FORM LINK4: ", responseData.content[i]?.actionDetails.body)
+                                if (params["emailSubject"] === "Your Application Form has been issued" && responseData.content[i].actionDetails.body !== undefined) {
                                     var extractedLinkFromBody = responseData.content[i].actionDetails.body.match(/"https:(.*?)"/g);
                                     const newString = String(extractedLinkFromBody).replace(/['"]+/g, '').replace(/&amp;/g, '&');
                                     console.log("NEW URL: ", newString);
